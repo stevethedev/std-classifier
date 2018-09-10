@@ -1,6 +1,7 @@
-import { Fgi, IFgiConstruct } from '.';
+import { Fgi } from '.';
 import { CLASSIFICATION_LEVEL } from '../classification-level/enum';
 import { IClassification } from '../classification/interface';
+import { IFgiConstruct } from './interface';
 
 export class FgiCollection {
   private mFgi: Fgi[] = [];
@@ -70,5 +71,9 @@ export class FgiCollection {
         .filter((x: string) => x)
         .join(' ')
     }`;
+  }
+
+  public toJSON(): IFgiConstruct[] {
+    return this.mFgi.map((fgi: Fgi) => fgi.toJSON());
   }
 }

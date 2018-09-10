@@ -6,8 +6,7 @@
 
 import { Codeword } from './index';
 
-export class CodewordCollection
-{
+export class CodewordCollection {
   private mCodewords: Codeword[];
 
   constructor(codewords: string[] = []) {
@@ -27,9 +26,8 @@ export class CodewordCollection
   }
 
   public has(codeword: string): boolean {
-    const { mCodewords } = this;
-    for (let iCodeword = 0; iCodeword < mCodewords.length; ++iCodeword) {
-      if (mCodewords[iCodeword].toString() === codeword) {
+    for (const iCodeword of this.mCodewords) {
+      if (iCodeword.toString() === codeword) {
         return true;
       }
     }
@@ -37,8 +35,8 @@ export class CodewordCollection
   }
 
   public rem(codeword: string): boolean {
-    const { mCodewords } = this;
-    const { length } = mCodewords;
+    const { mCodewords }: CodewordCollection = this;
+    const { length }: Codeword[] = mCodewords;
     for (let iCodeword = 0; iCodeword < mCodewords.length; ++iCodeword) {
       if (mCodewords[iCodeword].toString() === codeword) {
         mCodewords.splice(iCodeword--, 1);
@@ -49,5 +47,9 @@ export class CodewordCollection
 
   public toString(): string {
     return this.mCodewords.join('/');
+  }
+
+  public toJSON(): string[] {
+    return this.mCodewords.map((codeword: Codeword) => codeword.toJSON());
   }
 }

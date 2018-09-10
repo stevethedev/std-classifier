@@ -7,11 +7,21 @@
 import { CLASSIFICATION_LEVEL } from '../classification-level/enum';
 import { IFgiConstruct } from '../fgi';
 
+export interface IClassificationConstructor {
+  level ?: CLASSIFICATION_LEVEL;
+  codewords ?: string[];
+  fgi ?: IFgiConstruct[];
+  nonic ?: string[];
+  dissemination ?: IDisseminationConstruct;
+}
+
 export interface IClassification {
   // This method is responsible for converting the class's internal data into
   // their textual representations in a way that reflects & adheres to the
   // current guidance. All conversion logic is completed by children.
   toString(): string;
+  toJSON(): IClassificationConstructor;
+  serialize(): string;
 
   // This method is responsible for setting the overall classification level
   // (i.e. UNCLASSIFIED, CONFIDENTIAL, SECRET, TOP SECRET). This function

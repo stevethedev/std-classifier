@@ -14,6 +14,10 @@ export class NonICMarkings implements INonICMarkings {
     return this.mMarkings.join(',');
   }
 
+  public toJSON(): string[] {
+    return this.mMarkings.map((marking: string) => marking);
+  }
+
   public get(): string[] {
     return this.mMarkings.slice();
   }

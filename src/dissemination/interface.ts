@@ -1,8 +1,22 @@
 import { IClassification } from '../classification/interface';
 
-export interface IDissemination
-{
+export interface IDisseminationConstruct {
+  dsen ?: boolean;
+  fouo ?: boolean;
+  imcon ?: boolean;
+  noforn ?: boolean;
+  orcon ?: boolean;
+  propin ?: boolean;
+  relido ?: boolean;
+  rsen ?: boolean;
+
+  rel ?: string[];
+  eyes ?: string[];
+}
+
+export interface IDissemination {
   toString(classification: IClassification): string;
+  toJSON(): IDisseminationConstruct;
 
   setRsen(rsen: boolean): IDissemination;
   isRsen(): boolean;
@@ -37,4 +51,4 @@ export interface IDissemination
   addEyes(nation: string): IDissemination;
   hasEyes(nation: string): boolean;
   remEyes(nation: string): boolean;
-};
+}

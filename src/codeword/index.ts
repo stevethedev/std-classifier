@@ -1,7 +1,6 @@
 import { ICodeword } from './interface';
 
-export class Codeword implements ICodeword
-{
+export class Codeword implements ICodeword {
   private mCodeword: string = '';
 
   constructor(codeword: string) {
@@ -20,4 +19,8 @@ export class Codeword implements ICodeword
   public toString(): string {
     return this.mCodeword.toUpperCase();
   }
-};
+
+  public toJSON(): string {
+    return this.mCodeword;
+  }
+}

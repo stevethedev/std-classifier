@@ -1,10 +1,5 @@
 import { CLASSIFICATION_LEVEL } from '../classification-level/enum';
-import { IFgi } from './interface';
-
-export interface IFgiConstruct {
-  owner: string;
-  level ?: CLASSIFICATION_LEVEL;
-}
+import { IFgi, IFgiConstruct } from './interface';
 
 export class Fgi implements IFgi {
   private mFgi: string;
@@ -45,5 +40,12 @@ export class Fgi implements IFgi {
         break;
     }
     return result.join(' ');
+  }
+
+  public toJSON(): IFgiConstruct {
+    return {
+      level: this.getLevel(),
+      owner: this.getOwner(),
+    };
   }
 }
