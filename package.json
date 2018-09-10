@@ -1,0 +1,22 @@
+{
+  "name": "std-classifier",
+  "version": "1.0.0",
+  "description": "Department of Defense Classification Library",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup -c ./build/rollup.config.js",
+    "lint": "npm run lint:tsc && npm run lint:tslint",
+    "lint:tsc": "node node_modules/.bin/tsc --noEmit",
+    "lint:tslint": "node node_modules/.bin/tslint -c tslint.json -p .",
+    "test": "ava"
+  },
+  "author": "Steven Jimenez <steven@stevethedev.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "ava": "^0.25.0",
+    "rollup": "^0.65.2",
+    "rollup-plugin-typescript2": "^0.17.0",
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.3"
+  }
+}
