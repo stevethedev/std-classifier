@@ -4,22 +4,14 @@
  * through. It implements the co-located ClassificationInterface contract.
  */
 
-import { IClassification } from './interface';
+import { IClassification, IClassificationConstructor } from './interface';
 
 import { CLASSIFICATION_LEVEL, ClassificationLevel } from '../classification-level';
 import { CodewordCollection } from '../codeword/collection';
-import { Dissemination, IDisseminationConstruct } from '../dissemination';
-import { IFgiConstruct } from '../fgi';
+import { Dissemination } from '../dissemination';
 import { FgiCollection } from '../fgi/collection';
+import { IFgiConstruct } from '../fgi/interface';
 import { NonICMarkings } from '../non-ic-markings';
-
-interface IClassificationConstructor {
-  level ?: CLASSIFICATION_LEVEL;
-  codewords ?: string[];
-  fgi ?: IFgiConstruct[];
-  nonic ?: string[];
-  dissemination ?: IDisseminationConstruct;
-}
 
 const reduceLevel = (level: ClassificationLevel, fgi: FgiCollection): string => {
   if (1 === fgi.size() && (level.getLevel() === CLASSIFICATION_LEVEL.UNCLASSIFIED)) {
@@ -36,6 +28,10 @@ const reduceLevel = (level: ClassificationLevel, fgi: FgiCollection): string => 
 };
 
 export class Classification implements IClassification {
+  public static deserialize(json: string): Classification {
+    return new Classification(JSON.parse(json));
+  }
+
   private mLevel: ClassificationLevel;
   private mCodewords: CodewordCollection;
   private mDissemination: Dissemination;
@@ -69,6 +65,20 @@ export class Classification implements IClassification {
       return [level, ...result].join('//');
     }
     return level;
+  }
+
+  public toJSON(): IClassificationConstructor {
+    return {
+      codewords: this.mCodewords.toJSON(),
+      dissemination: this.mDissemination.toJSON(),
+      fgi: this.mFgi.toJSON(),
+      level: this.mLevel.toJSON(),
+      nonic: this.mNonIC.toJSON(),
+    };
+  }
+
+  public serialize(): string {
+    return JSON.stringify(this);
   }
 
   /*

@@ -7,8 +7,14 @@
 import { CLASSIFICATION_LEVEL } from '../classification-level/enum';
 import { IClassification } from '../classification/interface';
 
+export interface IFgiConstruct {
+  owner: string;
+  level ?: CLASSIFICATION_LEVEL;
+}
+
 export interface IFgi {
   toString(classification: IClassification): string;
+  toJSON(): IFgiConstruct;
 
   getOwner(): string;
 

@@ -1,5 +1,6 @@
 export interface INonICMarkings {
   toString(): string;
+  toJSON(): string[];
 
   get(): string[];
 

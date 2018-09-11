@@ -6,10 +6,10 @@
 
 import { CLASSIFICATION_LEVEL } from './enum';
 
-export interface IClassificationLevel
-{
+export interface IClassificationLevel {
   toString(): string;
+  toJSON(): CLASSIFICATION_LEVEL;
 
   setLevel(level: CLASSIFICATION_LEVEL): IClassificationLevel;
   getLevel(): CLASSIFICATION_LEVEL;
-};
+}

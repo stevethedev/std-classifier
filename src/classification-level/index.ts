@@ -3,8 +3,7 @@ import { IClassificationLevel } from './interface';
 
 export { CLASSIFICATION_LEVEL };
 
-export class ClassificationLevel implements IClassificationLevel
-{
+export class ClassificationLevel implements IClassificationLevel {
   private mLevel: CLASSIFICATION_LEVEL = CLASSIFICATION_LEVEL.UNCLASSIFIED;
 
   public constructor(level: CLASSIFICATION_LEVEL = CLASSIFICATION_LEVEL.UNCLASSIFIED) {
@@ -38,8 +37,14 @@ export class ClassificationLevel implements IClassificationLevel
 
       case (CLASSIFICATION_LEVEL.TOP_SECRET === this.mLevel):
         return 'TOP SECRET';
+
+      default: break;
     }
 
     throw new Error(`Unsupported classification level [${this.mLevel}]`);
   }
-};
+
+  public toJSON(): CLASSIFICATION_LEVEL {
+    return this.mLevel;
+  }
+}

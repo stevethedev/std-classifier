@@ -1,6 +1,6 @@
-import { IClassification } from '../classification/interface';
-import { IDissemination } from './interface';
 import { CLASSIFICATION_LEVEL } from '../classification-level/enum';
+import { IClassification } from '../classification/interface';
+import { IDissemination, IDisseminationConstruct } from './interface';
 
 const reduceReleasability = (noforn: boolean, rel: string[], eyes: string[]): string => {
   if (noforn) {
@@ -32,10 +32,10 @@ const reduceReleasability = (noforn: boolean, rel: string[], eyes: string[]): st
 
 const reduceFouo = (level: number, fouo: boolean): string => {
   if (level !== CLASSIFICATION_LEVEL.UNCLASSIFIED) {
-    return ''
+    return '';
   }
   return (fouo ? 'FOR OFFICIAL USE ONLY' : '');
-}
+};
 const reduceRsen = (rsen: boolean): string => (rsen ? 'RSEN' : '');
 const reduceOrcon = (orcon: boolean): string => (orcon ? 'ORCON' : '');
 const reducePropin = (propin: boolean): string => (propin ? 'PROPIN' : '');
@@ -44,23 +44,7 @@ const reduceRelido = (relido: boolean): string => (relido ? 'RELIDO' : '');
 const reduceImcon = (imcon: boolean): string => (imcon ? 'IMCON' : '');
 const reduceFisa = (fisa: boolean): string => (fisa ? 'FISA' : '');
 
-export interface IDisseminationConstruct
-{
-  dsen ?: boolean;
-  fouo ?: boolean;
-  imcon ?: boolean;
-  noforn ?: boolean;
-  orcon ?: boolean;
-  propin ?: boolean;
-  relido ?: boolean;
-  rsen ?: boolean;
-
-  rel ?: string[];
-  eyes ?: string[];
-};
-
-export class Dissemination implements IDissemination
-{
+export class Dissemination implements IDissemination {
   private mDsen:   boolean = false;
   private mEyes:   string[] = [];
   private mFouo:   boolean = false;
@@ -110,7 +94,23 @@ export class Dissemination implements IDissemination
       reduceFisa(this.mFisa),
       reduceReleasability(this.mNoforn, this.mRel.sort(), this.mEyes.sort()),
     ];
-    return result.filter(x => x).join(',');
+    return result.filter((x) => x).join(',');
+  }
+
+  public toJSON(): IDisseminationConstruct {
+    return {
+      dsen: this.isDsen(),
+      fouo: this.isFouo(),
+      imcon: this.isImcon(),
+      noforn: this.isNoforn(),
+      orcon: this.isOrcon(),
+      propin: this.isPropin(),
+      relido: this.isRelido(),
+      rsen: this.isRsen(),
+
+      eyes: this.mEyes.map((eye: string) => eye),
+      rel: this.mRel.map((rel: string) => rel),
+    };
   }
 
   public setRsen(rsen: boolean): Dissemination {
@@ -195,17 +195,16 @@ export class Dissemination implements IDissemination
     return this;
   }
   public hasRel(nation: string): boolean {
-    const { mRel } = this;
-    for (let iRel = 0; iRel < mRel.length; ++iRel) {
-      if (mRel[iRel].toUpperCase() === nation.toUpperCase()) {
+    for (const rel of this.mRel) {
+      if (rel.toUpperCase() === nation.toUpperCase()) {
         return true;
       }
     }
     return false;
   }
   public remRel(nation: string): boolean {
-    const { mRel } = this;
-    const { length } = mRel;
+    const { mRel }: Dissemination = this;
+    const { length }: string[] = mRel;
     for (let iRel = 0; iRel < mRel.length; ++iRel) {
       if (mRel[iRel].toUpperCase() === nation.toUpperCase()) {
         mRel.splice(iRel--, 1);
@@ -224,17 +223,16 @@ export class Dissemination implements IDissemination
     return this;
   }
   public hasEyes(nation: string): boolean {
-    const { mEyes } = this;
-    for (let iEyes = 0; iEyes < mEyes.length; ++iEyes) {
-      if (mEyes[iEyes].toUpperCase() === nation.toUpperCase()) {
+    for (const eye of this.mEyes) {
+      if (eye.toUpperCase() === nation.toUpperCase()) {
         return true;
       }
     }
     return false;
   }
   public remEyes(nation: string): boolean {
-    const { mEyes } = this;
-    const { length } = mEyes;
+    const { mEyes }: Dissemination = this;
+    const { length }: string[] = mEyes;
     for (let iEyes = 0; iEyes < mEyes.length; ++iEyes) {
       if (mEyes[iEyes].toUpperCase() === nation.toUpperCase()) {
         mEyes.splice(iEyes--, 1);
@@ -242,4 +240,4 @@ export class Dissemination implements IDissemination
     }
     return length !== mEyes.length;
   }
-};
+}
