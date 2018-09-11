@@ -1,0 +1,35 @@
+# Notification Options
+notifications:
+  email: false
+
+# Regent supports Node.js v8
+language: node_js
+node_js:
+  - '10'
+
+# Operating Systems
+os:
+  - linux
+  # MacOS would be nice, but builds take too long.
+  # - osx
+
+# Branches that can trigger Travis-CI
+branches:
+  only:
+    - master        # Master
+    - /^issue-.*$/ # Issues
+
+# declare your environment variables
+env:
+  # matrix variables will create a new build for each specified variable
+  matrix:
+    - NODE_ENV=development
+    # Do not use production mode for testing, because this prevents ava from
+    # being installed, and prevents us from testing it.
+    # - NODE_ENV=production
+
+install:
+  - npm install
+
+script:
+  - npm run build && npm run test
