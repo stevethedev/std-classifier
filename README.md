@@ -5,10 +5,10 @@
 [![Codacy Badge][codacy-image]][codacy-url]
 [![Known Vulnerabilities][snyk-image]][snyk-url]
 
-[appveyor-status-image]: https://
-[appveyor-status-url]: https://
-[build-status-image]: https://
-[build-status-url]: https://travis-ci.org/stevethedev/regent
+[appveyor-status-image]: https://ci.appveyor.com/api/projects/status/8i82xnlptwxas7vh/branch/master?svg=true
+[appveyor-status-url]: https://ci.appveyor.com/project/stevethedev/std-classifier/branch/master
+[build-status-image]: https://travis-ci.org/stevethedev/std-classifier.svg?branch=master
+[build-status-url]: https://travis-ci.org/stevethedev/std-classifier
 [codacy-image]: https://api.codacy.com/project/badge/Grade/9418a567fab1480c8a11df559b048445
 [codacy-url]: https://www.codacy.com/app/stevethedev/std-classifier?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=stevethedev/std-classifier&amp;utm_campaign=Badge_Grade
 [license-url]: http://opensource.org/licenses/MIT
