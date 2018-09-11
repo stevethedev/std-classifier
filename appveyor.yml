@@ -1,0 +1,11 @@
+environment:
+  nodejs_version: "10"
+  matrix:
+    - NODE_ENV: development
+build: off
+install:
+  - ps: Install-Product node $env:nodejs_version
+  - npm install
+  - npt build
+test_script:
+  - npm run test
