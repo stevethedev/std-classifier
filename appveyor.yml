@@ -6,6 +6,6 @@ build: off
 install:
   - ps: Install-Product node $env:nodejs_version
   - npm install
-  - npm build
+  - npm run build
 test_script:
   - npm run test
