@@ -1,5 +1,5 @@
 import test from 'ava';
-import { Classification } from '../dist/classifier';
+// import { Classification } from '../dist/classifier';
 
 test.todo('Non-US Classifications throw an error at trigraph Level -1');
 test.todo('Non-US Classifications accept country trigraphs at Level 0');
