@@ -1,13 +1,14 @@
 import test from 'ava';
 import { Classification } from '..';
 
-test('Serializing classifications creates an object', t => {
+test('Serializing classifications creates an object', (t) => {
   const classification = new Classification();
+
   t.is(typeof classification.toJSON(), 'object');
   t.is(typeof classification.serialize(), 'string');
 });
 
-test('Serialized classifications can be used to instantiate new Classification objects', t => {
+test('Serialized classifications can be used to instantiate new Classification objects', (t) => {
   const classification1 = new Classification();
   const classification2 = new Classification(classification1.toJSON());
   const classification3 = Classification.deserialize(classification1.serialize());
@@ -17,7 +18,7 @@ test('Serialized classifications can be used to instantiate new Classification o
   t.true(classification3 instanceof Classification);
 });
 
-test('Classification objects instantiated using serialized values yield identical results to the first object', t => {
+test('Classification objects instantiated using serialized values yield identical results to the first object', (t) => {
   const classification1 = new Classification();
 
   classification1.setClassificationLevel(3);
