@@ -17,7 +17,7 @@ test('One codeword appears after classification level', (t) => {
 });
 
 test('Multiple codewords are separated by a single slash (/)', (t) => {
-  const classification = new  Classification();
+  const classification = new Classification();
 
   classification.setClassificationLevel(4);
   classification.addCodeword('SI');

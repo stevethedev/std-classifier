@@ -203,7 +203,7 @@ test('Dissemination controls can check for EYES ONLY nations', (t) => {
   classification.setClassificationLevel(4);
   t.is(classification.hasEyes('GBR'), false);
   t.is(classification.addEyes('GBR').hasEyes('GBR'), true);
-  classification.remEyes('GBR')
+  classification.remEyes('GBR');
   t.is(classification.hasEyes('GBR'), false);
 });
 
