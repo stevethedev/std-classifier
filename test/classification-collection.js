@@ -1,5 +1,5 @@
 import test from 'ava';
-import { Classification, ClassificationCollection } from '../dist/classifier';
+import { Classification, ClassificationCollection } from '../src/main';
 
 test('Classification Collection returns UNCLASSIFIED when empty', (t) => {
   const cc = new ClassificationCollection();

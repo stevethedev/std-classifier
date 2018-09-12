@@ -1,5 +1,5 @@
 import test from 'ava';
-import { Classification } from '..';
+import { Classification } from '../src/main';
 
 test('Serializing classifications creates an object', (t) => {
   const classification = new Classification();

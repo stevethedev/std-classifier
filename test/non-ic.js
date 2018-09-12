@@ -1,5 +1,5 @@
 import test from 'ava';
-import { Classification } from '../dist/classifier';
+import { Classification } from '../src/main';
 
 test('Non-IC markings default to blank', (t) => {
   const classification = new Classification();
