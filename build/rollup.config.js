@@ -14,6 +14,13 @@ export default {
       format: 'umd'
     },
     plugins: [
-        typescript({ typescript: require('typescript') })
+        typescript({
+          typescript: require('typescript'),
+          tsconfigOverride: {
+            compilerOptions: {
+              module: 'es2015'
+            }
+          }
+        })
     ],
 };
