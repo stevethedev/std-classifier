@@ -1,5 +1,5 @@
 import test from 'ava';
-import { Classification } from '../dist/classifier';
+import { Classification } from '../src/main';
 
 test('Codewords default to blank', (t) => {
   const classification = new Classification();

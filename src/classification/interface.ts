@@ -5,7 +5,8 @@
  */
 
 import { CLASSIFICATION_LEVEL } from '../classification-level/enum';
-import { IFgiConstruct } from '../fgi';
+import { IDisseminationConstruct } from '../dissemination/interface';
+import { IFgiConstruct } from '../fgi/interface';
 
 export interface IClassificationConstructor {
   level ?: CLASSIFICATION_LEVEL;
