@@ -37,7 +37,7 @@ export interface IClassification {
 
   getFgi(): IFgiConstruct[];
   addFgi(...fgi: IFgiConstruct[]): IClassification;
-  hasFgi(fgi: string): boolean;
+  hasFgi(fgi: IFgiConstruct): boolean;
   remFgi(fgi: IFgiConstruct): boolean;
 
   getNonIC(): string[];
