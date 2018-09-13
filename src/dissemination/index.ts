@@ -45,13 +45,14 @@ const reduceImcon = (imcon: boolean): string => (imcon ? 'IMCON' : '');
 const reduceFisa = (fisa: boolean): string => (fisa ? 'FISA' : '');
 
 export class Dissemination implements IDissemination {
+  private readonly mEyes:   string[] = [];
+  private readonly mRel:    string[] = [];
+
   private mDsen:   boolean = false;
-  private mEyes:   string[] = [];
   private mFouo:   boolean = false;
   private mNoforn: boolean = false;
   private mOrcon:  boolean = false;
   private mPropin: boolean = false;
-  private mRel:    string[] = [];
   private mRsen:   boolean = false;
   private mRelido: boolean = false;
   private mImcon:  boolean = false;

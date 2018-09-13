@@ -9,7 +9,7 @@ import { IClassification, IClassificationConstructor } from '../classification/i
 import { IClassificationCollection } from './interface';
 
 export class ClassificationCollection implements IClassificationCollection {
-  private mClassifications: Array<IClassification | null> = [];
+  private readonly mClassifications: Array<IClassification | null> = [];
 
   /** Get the number of Classification elements within this collection. */
   public count(): number {

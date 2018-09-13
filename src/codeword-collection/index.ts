@@ -9,7 +9,7 @@ import { ICodeword } from '../codeword/interface';
 import { ICodewordCollection } from './interface';
 
 export class CodewordCollection implements ICodewordCollection {
-  private mCodewords: Array<ICodeword | null>;
+  private readonly mCodewords: Array<ICodeword | null>;
 
   constructor(codewords: string[] = []) {
     this.mCodewords = [];
