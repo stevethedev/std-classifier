@@ -4,7 +4,7 @@
  * a way that lets us generate a new, aggregate classification.
  */
 
-import { Classification } from '../classification/index';
+import { Classification } from '../classification';
 import { IClassification } from '../classification/interface';
 import { IClassificationCollection } from './interface';
 

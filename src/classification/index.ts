@@ -7,7 +7,7 @@
 import { IClassification, IClassificationConstructor } from './interface';
 
 import { CLASSIFICATION_LEVEL, ClassificationLevel } from '../classification-level';
-import { CodewordCollection } from '../codeword/collection';
+import { CodewordCollection } from '../codeword-collection';
 import { Dissemination } from '../dissemination';
 import { FgiCollection } from '../fgi/collection';
 import { IFgiConstruct } from '../fgi/interface';
@@ -101,8 +101,9 @@ export class Classification implements IClassification {
    |---------------------------------------------------------------------------
    */
   public getCodewords(): string[] {
-    return this.mCodewords.get();
+    return this.mCodewords.toArray();
   }
+
   public addCodeword(...codewords: string[]): Classification {
     for (const codeword of codewords) {
       this.mCodewords.add(codeword);
@@ -115,7 +116,7 @@ export class Classification implements IClassification {
   }
 
   public remCodeword(codeword: string): boolean {
-    return this.mCodewords.rem(codeword);
+    return this.mCodewords.rem(this.mCodewords.find(codeword));
   }
 
   /*
