@@ -12,12 +12,12 @@ export class Codeword implements ICodeword {
   }
 
   public setCodeword(codeword: string): Codeword {
-    this.mCodeword = codeword;
+    this.mCodeword = `${codeword}`.toUpperCase();
     return this;
   }
 
   public toString(): string {
-    return this.mCodeword.toUpperCase();
+    return this.getCodeword();
   }
 
   public toJSON(): string {

@@ -72,3 +72,13 @@ test('Searching for a nonexistent codeword returns "false"', (t) => {
 
   t.is(classification.remCodeword('SI'), false);
 });
+
+test('Codewords should always default to upper-case', (t) => {
+  const classification = new Classification();
+
+  classification.addCodeword('Si');
+  t.is(classification.hasCodeword('SI'), true);
+  t.is(classification.hasCodeword('si'), true);
+  t.is(classification.hasCodeword('sI'), true);
+  t.is(classification.hasCodeword('Si'), true);
+});

@@ -72,8 +72,9 @@ export class CodewordCollection implements ICodewordCollection {
   /** Find the codeword that matches the given string */
   public find(codeword: string): number {
     let index = -1;
+    const uCodeword = `${codeword}`.toUpperCase();
     this.forEach((iCodeword: string, iIndex: number, terminate: () => void) => {
-      if (iCodeword === `${codeword}`.toUpperCase()) {
+      if (iCodeword === uCodeword) {
         index = iIndex;
         terminate();
       }
