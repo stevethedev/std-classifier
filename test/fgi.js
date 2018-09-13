@@ -102,12 +102,12 @@ test('Searching for an existent FGI returns "true"', (t) => {
 
   classification.setClassificationLevel(4);
   classification.addFgi({ owner: 'CAN' });
-  t.is(classification.hasFgi('CAN'), true);
+  t.is(classification.hasFgi({ owner: 'CAN' }), true);
 });
 
 test('Searching for a nonexistent FGI returns "false"', (t) => {
   const classification = new Classification();
 
   classification.setClassificationLevel(4);
-  t.is(classification.hasFgi('CAN'), false);
+  t.is(classification.hasFgi({ owner: 'CAN' }), false);
 });

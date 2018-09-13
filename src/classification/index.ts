@@ -9,21 +9,23 @@ import { IClassification, IClassificationConstructor } from './interface';
 import { CLASSIFICATION_LEVEL, ClassificationLevel } from '../classification-level';
 import { CodewordCollection } from '../codeword-collection';
 import { Dissemination } from '../dissemination';
-import { FgiCollection } from '../fgi/collection';
+import { FgiCollection } from '../fgi-collection';
 import { IFgiConstruct } from '../fgi/interface';
 import { NonICMarkings } from '../non-ic-markings';
 
 const reduceLevel = (level: ClassificationLevel, fgi: FgiCollection): string => {
-  if (1 === fgi.size() && (level.getLevel() === CLASSIFICATION_LEVEL.UNCLASSIFIED)) {
+  let maxLevel = level.getLevel();
+
+  if (1 === fgi.getOwners().length && (maxLevel === CLASSIFICATION_LEVEL.UNCLASSIFIED)) {
     return '';
   }
 
-  let maxLevel = level.getLevel();
-  for (const { level: fgiLevel } of fgi.get()) {
+  fgi.forEach(({ level: fgiLevel }: IFgiConstruct) => {
     if (fgiLevel && (maxLevel < fgiLevel)) {
       maxLevel = fgiLevel;
     }
-  }
+  });
+
   return (new ClassificationLevel(maxLevel)).toString();
 };
 
@@ -125,8 +127,9 @@ export class Classification implements IClassification {
    |---------------------------------------------------------------------------
    */
   public getFgi(): IFgiConstruct[] {
-    return this.mFgi.get();
+    return this.mFgi.toArray();
   }
+
   public addFgi(...fgis: IFgiConstruct[]): Classification {
     for (const fgi of fgis) {
       this.mFgi.add(fgi);
@@ -134,12 +137,12 @@ export class Classification implements IClassification {
     return this;
   }
 
-  public hasFgi(fgi: string): boolean {
+  public hasFgi(fgi: IFgiConstruct): boolean {
     return this.mFgi.has(fgi);
   }
 
   public remFgi(fgi: IFgiConstruct): boolean {
-    return this.mFgi.rem(fgi.owner, fgi.level);
+    return this.mFgi.rem(this.mFgi.find(fgi));
   }
 
   /*
