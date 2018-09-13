@@ -48,3 +48,64 @@ test('Classification Collection returns the aggregate of all Non-Intelligence Co
   cc.add(new Classification({ level: 4, nonic: ['COMSEC'] }));
   t.is(cc.reduce().toString(), 'TOP SECRET//COMSEC,LES');
 });
+
+test('Classification Collection count reflects the number of valid records', (t) => {
+  const cc = new ClassificationCollection();
+
+  t.is(cc.count(), 0);
+
+  cc.add(new Classification());
+  t.is(cc.count(), 1);
+
+  cc.add(new Classification());
+  t.is(cc.count(), 2);
+
+  cc.rem(0);
+  t.is(cc.count(), 1);
+
+  cc.rem(0);
+  t.is(cc.count(), 1);
+
+  cc.rem(1);
+  t.is(cc.count(), 0);
+});
+
+test('Classification Collection allows fetching classifications by index', (t) => {
+  const cc = new ClassificationCollection();
+
+  t.is(cc.get(0), null);
+
+  const classification = new Classification();
+
+  cc.add(classification);
+  t.is(cc.get(0), classification);
+});
+
+test('Classification Collection allows removing classifications by index', (t) => {
+  const cc = new ClassificationCollection();
+
+  const classification = new Classification();
+  cc.add(classification);
+  t.is(cc.get(0), classification);
+
+  cc.rem(0);
+  t.is(cc.get(0), null);
+});
+
+test('Classification Collection allows looking up classifications', (t) => {
+  const cc = new ClassificationCollection();
+
+  const class1 = new Classification();
+  const class2 = new Classification();
+
+  cc.add(class1);
+
+  class1.addFgi({ owner: 'CAN' });
+  class1.addFgi({ owner: 'AUS' });
+
+  class2.addFgi({ owner: 'AUS' });
+  class2.addFgi({ owner: 'CAN' });
+
+  t.is(cc.find(class2.toJSON()), 0);
+  t.is(cc.find({ foo: 'bar' }), -1);
+});

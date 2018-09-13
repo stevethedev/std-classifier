@@ -4,10 +4,12 @@
  * the collection follows the contract but simplifies definitions.
  */
 
-import { IClassification } from '../classification/interface';
+import { IClassification, IClassificationConstructor } from '../classification/interface';
 import { ICollection } from '../collection/interface';
 
 export interface IClassificationCollection extends ICollection<IClassification> {
   /** Collapse the collection into a single classification */
   reduce(): IClassification;
+
+  find(classification: IClassification | IClassificationConstructor): number;
 }

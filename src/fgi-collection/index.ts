@@ -85,7 +85,7 @@ export class FgiCollection implements IFgiCollection {
         json.push(iFgi.toJSON());
       }
     }
-    return json;
+    return json.sort(FGI_SORTER);
   }
 
   public getOwners(): string[] {

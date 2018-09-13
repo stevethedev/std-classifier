@@ -5,7 +5,7 @@
  */
 
 import { Classification } from '../classification';
-import { IClassification } from '../classification/interface';
+import { IClassification, IClassificationConstructor } from '../classification/interface';
 import { IClassificationCollection } from './interface';
 
 export class ClassificationCollection implements IClassificationCollection {
@@ -31,11 +31,15 @@ export class ClassificationCollection implements IClassificationCollection {
   }
 
   /** Find the first index of an object that matches the given classification object. */
-  public find(classification: IClassification): number {
+  public find(classification: IClassification | IClassificationConstructor): number {
+    const classificationObject = (classification instanceof Classification)
+      ? classification
+      : new Classification(classification as IClassificationConstructor);
+
     if (classification) {
       for (let iClassification = 0; iClassification < this.mClassifications.length; ++iClassification) {
         const oClassification = this.mClassifications[iClassification];
-        if (oClassification && oClassification.serialize() === oClassification.serialize()) {
+        if (oClassification && (classificationObject.serialize() === oClassification.serialize())) {
           return iClassification;
         }
       }
