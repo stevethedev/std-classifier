@@ -17,6 +17,37 @@ test('single-source FGI in otherwise unclassified document creates foreign-intel
   t.is(classification.toString(), '//CAN SECRET');
 });
 
+test('single-source FGI in otherwise unclassified document supports //TLA UNCLASSIFIED', (t) => {
+  const classification = new Classification();
+
+  classification.addFgi({ owner: 'CAN', level: 0 });
+  t.is(classification.toString(), '//CAN UNCLASSIFIED');
+});
+test('single-source FGI in otherwise unclassified document supports //TLA RESTRICTED', (t) => {
+  const classification = new Classification();
+
+  classification.addFgi({ owner: 'CAN', level: 1 });
+  t.is(classification.toString(), '//CAN RESTRICTED');
+});
+test('single-source FGI in otherwise unclassified document supports //TLA CONFIDENTIAL', (t) => {
+  const classification = new Classification();
+
+  classification.addFgi({ owner: 'CAN', level: 2 });
+  t.is(classification.toString(), '//CAN CONFIDENTIAL');
+});
+test('single-source FGI in otherwise unclassified document supports //TLA SECRET', (t) => {
+  const classification = new Classification();
+
+  classification.addFgi({ owner: 'CAN', level: 3 });
+  t.is(classification.toString(), '//CAN SECRET');
+});
+test('single-source FGI in otherwise unclassified document supports //TLA TOP SECRET', (t) => {
+  const classification = new Classification();
+
+  classification.addFgi({ owner: 'CAN', level: 4 });
+  t.is(classification.toString(), '//CAN TOP SECRET');
+});
+
 test('multi-source FGI in otherwise unclassified document creates FGI document', (t) => {
   const classification = new Classification();
 
