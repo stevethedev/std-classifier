@@ -2,8 +2,8 @@ import { CLASSIFICATION_LEVEL } from '../classification-level/enum';
 import { IFgi, IFgiConstruct } from './interface';
 
 export class Fgi implements IFgi {
-  private mFgi: string;
-  private mLevel: CLASSIFICATION_LEVEL;
+  private readonly mFgi: string;
+  private readonly mLevel: CLASSIFICATION_LEVEL;
 
   constructor({ owner, level = 0 }: IFgiConstruct) {
     this.mFgi = owner;

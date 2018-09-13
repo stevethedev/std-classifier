@@ -32,7 +32,7 @@ const FGI_SORTER = (
 };
 
 export class FgiCollection implements IFgiCollection {
-  private mFgi: Array<IFgi | null> = [];
+  private readonly mFgi: Array<IFgi | null> = [];
 
   constructor(fgis: IFgiConstruct[] = []) {
     for (const fgi of fgis) {
@@ -114,7 +114,7 @@ export class FgiCollection implements IFgiCollection {
       if (fgi.owner === `${owner}`.toUpperCase()) {
         if (('undefined' === typeof level) || (fgi.level === level)) {
           found = true;
-          return terminate();
+          terminate();
         }
       }
     });
@@ -149,7 +149,7 @@ export class FgiCollection implements IFgiCollection {
       if (fgi.owner === owner) {
         if (('undefined' === typeof level) || (fgi.level === level)) {
           index = iFgi;
-          return terminate();
+          terminate();
         }
       }
     });

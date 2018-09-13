@@ -34,11 +34,11 @@ export class Classification implements IClassification {
     return new Classification(JSON.parse(json));
   }
 
-  private mLevel: ClassificationLevel;
-  private mCodewords: CodewordCollection;
-  private mDissemination: Dissemination;
-  private mFgi: FgiCollection;
-  private mNonIC: NonICMarkings;
+  private readonly mLevel: ClassificationLevel;
+  private readonly mCodewords: CodewordCollection;
+  private readonly mDissemination: Dissemination;
+  private readonly mFgi: FgiCollection;
+  private readonly mNonIC: NonICMarkings;
 
   public constructor({
     level,
