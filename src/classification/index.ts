@@ -30,6 +30,8 @@ const reduceLevel = (level: ClassificationLevel, fgi: FgiCollection): string => 
 };
 
 export class Classification implements IClassification {
+  public static levels: (typeof CLASSIFICATION_LEVEL) = CLASSIFICATION_LEVEL;
+
   public static deserialize(json: string): Classification {
     return new Classification(JSON.parse(json));
   }
