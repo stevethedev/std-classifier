@@ -8,6 +8,7 @@ import { IClassification, IClassificationConstructor } from './interface';
 
 import { CLASSIFICATION_LEVEL, ClassificationLevel } from '../classification-level';
 import { CodewordCollection } from '../codeword-collection';
+import { Declassification } from '../declassification';
 import { Dissemination } from '../dissemination';
 import { FgiCollection } from '../fgi-collection';
 import { IFgiConstruct } from '../fgi/interface';
@@ -41,6 +42,7 @@ export class Classification implements IClassification {
   private readonly mDissemination: Dissemination;
   private readonly mFgi: FgiCollection;
   private readonly mNonIC: NonICMarkings;
+  private readonly mDeclassification: Declassification;
 
   public constructor({
     level,
@@ -48,12 +50,14 @@ export class Classification implements IClassification {
     fgi,
     nonic,
     dissemination,
+    declassification,
   }: IClassificationConstructor = {}) {
     this.mLevel = new ClassificationLevel(level);
     this.mCodewords = new CodewordCollection(codewords);
     this.mFgi = new FgiCollection(fgi);
     this.mDissemination = new Dissemination(dissemination);
     this.mNonIC = new NonICMarkings(nonic);
+    this.mDeclassification = new Declassification(declassification);
   }
 
   public toString(): string {
@@ -261,5 +265,32 @@ export class Classification implements IClassification {
   }
   public remEyes(nation: string): boolean {
     return this.mDissemination.remEyes(nation);
+  }
+
+  /*
+   |---------------------------------------------------------------------------
+   | Declassification Information
+   |---------------------------------------------------------------------------
+   */
+  public getClassificationDate(): Date {
+    return this.mDeclassification.getClassificationDate();
+  }
+  public setClassificationDate(date: string | Date | number): void {
+    return this.mDeclassification.setClassificationDate(date);
+  }
+  public getDeclassificationDate(): Date | null {
+    // FGI information is exempt from declassification
+    if (this.getFgi().length) {
+      return null;
+    }
+    return this.mDeclassification.getDate();
+  }
+
+  public getDeclassificationExemption(): string | null {
+    // FGI information is exempt from declassification
+    if (this.getFgi().length) {
+      return null;
+    }
+    return this.mDeclassification.getExemption();
   }
 }

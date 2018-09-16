@@ -1,5 +1,5 @@
 .nyc_output/*
 .rpt2_cache/*
-node_modules/*
+coverage/*
 dist/*
-
+node_modules/*
