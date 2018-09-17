@@ -78,6 +78,7 @@ export class Classification implements IClassification {
   public toJSON(): IClassificationConstructor {
     return {
       codewords: this.mCodewords.toJSON(),
+      declassification: this.mDeclassification.toJSON(),
       dissemination: this.mDissemination.toJSON(),
       fgi: this.mFgi.toJSON(),
       level: this.mLevel.toJSON(),
@@ -275,9 +276,15 @@ export class Classification implements IClassification {
   public getClassificationDate(): Date {
     return this.mDeclassification.getClassificationDate();
   }
+
   public setClassificationDate(date: string | Date | number): void {
-    return this.mDeclassification.setClassificationDate(date);
+    this.mDeclassification.setClassificationDate(date);
   }
+
+  public setDeclassificationDate(date: Date | string | number | null): void {
+    this.mDeclassification.setDate(date);
+  }
+
   public getDeclassificationDate(): Date | null {
     // FGI information is exempt from declassification
     if (this.getFgi().length) {
@@ -286,11 +293,23 @@ export class Classification implements IClassification {
     return this.mDeclassification.getDate();
   }
 
+  public getDeclassificationRawDate(): Date | null {
+    return this.mDeclassification.getRawDate();
+  }
+
   public getDeclassificationExemption(): string | null {
     // FGI information is exempt from declassification
     if (this.getFgi().length) {
       return null;
     }
     return this.mDeclassification.getExemption();
+  }
+
+  public getDeclassificationExemptions(): string[] {
+    return this.mDeclassification.getExemptionList();
+  }
+
+  public addDeclassificationExemptions(...exemptions: string[]): void {
+    exemptions.forEach((exemption: string) => this.mDeclassification.addExemption(exemption));
   }
 }

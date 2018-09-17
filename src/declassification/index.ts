@@ -14,17 +14,17 @@ function findRule(name: string): number {
   return -1;
 }
 
-function findMaxRuleIndex(exemptions: string[]): number {
-  // let ruleId = -1;
-  const ruleIds: number[] = exemptions
-    // Convert exemption names into rule indexes
-    .map((exemption: string) => {
-      const ruleIndex = findRule(exemption);
-      if (-1 === ruleIndex || isNaN(ruleIndex)) {
-        throw new Error(`Declassification rule "${exemption}" not found`);
-      }
-      return ruleIndex;
-    })
+function exemptionToRuleId(exemption: string): number {
+  const ruleIndex = findRule(exemption);
+  if (-1 === ruleIndex || isNaN(ruleIndex)) {
+    throw new Error(`Declassification rule "${exemption}" not found`);
+  }
+  return ruleIndex;
+}
+
+function rulesToIds(exemptions: string[]): number[] {
+  return exemptions
+    .map(exemptionToRuleId)
     // Sort the rule indexes into the order they appear in the registry
     .sort((aIndex: number, bIndex: number) => {
       switch (true) {
@@ -33,9 +33,15 @@ function findMaxRuleIndex(exemptions: string[]): number {
         default: return 0;
       }
     });
+}
 
+function idsToRules(ruleIds: number[]): string[] {
+  return ruleIds.map((ruleId: number) => RULE_REGISTRY[ruleId].id);
+}
+
+function findMaxRuleIndex(exemptions: string[]): number {
   // Find the first rule with the biggest offset
-  return ruleIds.reduce((current: number, ruleId: number) => {
+  return rulesToIds(exemptions).reduce((current: number, ruleId: number) => {
     if (-1 === current) {
       return ruleId;
     }
@@ -45,6 +51,18 @@ function findMaxRuleIndex(exemptions: string[]): number {
     }
     return current;
   }, -1);
+}
+
+function deduplicate<T>(exemptions: T[]): T[] {
+  const result: T[] = [];
+
+  exemptions.forEach((exemption: T) => {
+    if (!result.includes(exemption)) {
+      result.push(exemption);
+    }
+  });
+
+  return result;
 }
 
 export class Declassification implements IDeclassification {
@@ -60,19 +78,31 @@ export class Declassification implements IDeclassification {
   }
 
   private readonly mExemptions: string[] = [];
-  private mDate: Date;
-  private mDeclassifyOn: Date | null;
+  private mDate: Date = new Date();
+  private mDeclassifyOn: Date | null = null;
 
   constructor({
     created = new Date(),
     date = null,
     rules = [],
   }: IDeclassificationConstruct = {}) {
-    this.mDate = parse(created);
-    this.mDeclassifyOn = date ? parse(date) : null;
+    this.setClassificationDate(created);
+    this.setDate(date);
     for (const ruleName of rules) {
       this.addExemption(ruleName);
     }
+  }
+
+  public toJSON(): IDeclassificationConstruct {
+    return ({
+      created: parse(this.mDate),
+      date: this.mDeclassifyOn,
+      rules: this.getExemptionList(),
+    });
+  }
+
+  public getExemptionList(): string[] {
+    return idsToRules(deduplicate<number>(rulesToIds(this.mExemptions)));
   }
 
   public getExemption(): null | string {
@@ -100,6 +130,10 @@ export class Declassification implements IDeclassification {
     this.mDate = parse(date);
   }
 
+  public setDate(date: Date | string | number | null): void {
+    this.mDeclassifyOn = date ? parse(date) || null : null;
+  }
+
   public getDate(): null | Date {
     const ruleId = findMaxRuleIndex(this.mExemptions);
     const rule = (-1 === ruleId)
@@ -115,6 +149,13 @@ export class Declassification implements IDeclassification {
       }
     }
     return ruleDate;
+  }
+
+  public getRawDate(): null | Date {
+    if (this.mDeclassifyOn) {
+      return parse(this.mDeclassifyOn);
+    }
+    return null;
   }
 
   public addExemption(name: string): void {

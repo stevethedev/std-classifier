@@ -77,7 +77,11 @@ export class ClassificationCollection implements IClassificationCollection {
 
   /** Reduce the contained classifications into one new classification. */
   public reduce(): Classification {
-    const result = new Classification();
+    const result = new Classification({
+      declassification: {
+        created: 0,
+      },
+    });
 
     this.forEach((classification: IClassification) => {
       result.setClassificationLevel(Math.max(
@@ -99,7 +103,25 @@ export class ClassificationCollection implements IClassificationCollection {
 
       result.addCodeword(...classification.getCodewords());
       result.addFgi(...classification.getFgi());
+
+      result.setClassificationDate(Math.max(
+        result.getClassificationDate().getTime(),
+        classification.getClassificationDate().getTime(),
+      ));
+
+      result.addDeclassificationExemptions(
+        ...classification.getDeclassificationExemptions(),
+      );
+
+      const classificationDate = classification.getDeclassificationRawDate();
+      if (classificationDate) {
+        const resultDate = result.getDeclassificationRawDate();
+        if (!resultDate || resultDate.getTime() < classificationDate.getTime()) {
+          result.setDeclassificationDate(classificationDate);
+        }
+      }
     });
+
     return result;
   }
 }

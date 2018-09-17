@@ -81,5 +81,9 @@ export interface IClassification {
   getClassificationDate(): Date;
   setClassificationDate(date: Date | string | number): void;
   getDeclassificationDate(): Date | null;
+  setDeclassificationDate(date: Date | string | number | null): void;
+  getDeclassificationRawDate(): Date | null;
   getDeclassificationExemption(): string | null;
+  getDeclassificationExemptions(): string[];
+  addDeclassificationExemptions(...exemptions: string[]): void;
 }

@@ -1,4 +1,4 @@
-import { Classification } from '../src/main';
+import { Classification, ClassificationCollection } from '../src/main';
 import test from 'ava';
 
 test('US Classifications allow UNCLASSIFIED markings', (t) => {
@@ -602,4 +602,73 @@ test('Classification should use the first declassification exemption with the hi
   });
 
   t.is(classification.getDeclassificationExemption(), '75X1');
+});
+test('Serialized classifications should record the declassification rules', (t) => {
+  const classification = new Classification({
+    declassification: {
+      rules: [ '75X1', '75X2' ]
+    }
+  });
+
+  const { declassification } = classification.toJSON();
+
+  t.is(declassification.rules[0], '75X1');
+  t.is(declassification.rules[1], '75X2');
+});
+test('Serialized classifications should record the declassification date', (t) => {
+  const classification = new Classification({
+    declassification: { date: '20180101' }
+  });
+
+  const { declassification } = classification.toJSON();
+  const date = new Date(declassification.date);
+
+  t.is(date.getFullYear(), 2018);
+  t.is(date.getMonth(), 0);
+  t.is(date.getDate(), 1);
+});
+test('Serialized classifications should record the creation date', (t) =>{
+  const classification = new Classification({
+    declassification: { created: '20180101' }
+  });
+
+  const { declassification } = classification.toJSON();
+  const date = new Date(declassification.created);
+
+  t.is(date.getFullYear(), 2018);
+  t.is(date.getMonth(), 0);
+  t.is(date.getDate(), 1);
+});
+test('Derivative classifications should combine the declassification exemptions', (t) => {
+  const cc = new ClassificationCollection();
+
+  cc.add(new Classification({ declassification: { rules: ['25X3'] } }));
+  cc.add(new Classification({ declassification: { rules: ['25X1'] } }));
+  cc.add(new Classification({ declassification: { rules: ['25X2'] } }));
+
+  const classification = cc.reduce();
+
+  t.is(classification.getDeclassificationExemption(), '25X1');
+});
+test('Derivative classifications should use the biggest declassification date', (t) => {
+  const cc = new ClassificationCollection();
+
+  cc.add(new Classification({ declassification: { date: '20000101' } }));
+  cc.add(new Classification({ declassification: { date: '20100101' } }));
+  cc.add(new Classification({ declassification: { date: '20050101' } }));
+
+  const classification = cc.reduce();
+
+  t.is(classification.getDeclassificationRawDate().getFullYear(), 2010);
+});
+test('Derivative classifications should use the biggest classification date', (t) => {
+  const cc = new ClassificationCollection();
+
+  cc.add(new Classification({ declassification: { created: '20000101' } }));
+  cc.add(new Classification({ declassification: { created: '20100101' } }));
+  cc.add(new Classification({ declassification: { created: '20050101' } }));
+
+  const classification = cc.reduce();
+
+  t.is(classification.getClassificationDate().getFullYear(), 2010);
 });
