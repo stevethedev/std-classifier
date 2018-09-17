@@ -14,6 +14,8 @@ import { Dissemination } from '../dissemination';
 import { FgiCollection } from '../fgi-collection';
 import { IFgiConstruct } from '../fgi/interface';
 import { NonICMarkings } from '../non-ic-markings';
+import { SourceCollection } from '../source-collection';
+import { ISourceConstruct } from '../source/interface';
 
 const reduceLevel = (level: ClassificationLevel, fgi: FgiCollection): string => {
   let maxLevel = level.getLevel();
@@ -47,6 +49,7 @@ export class Classification implements IClassification {
   private readonly mFgi: FgiCollection;
   private readonly mNonIC: NonICMarkings;
   private readonly mDeclassification: Declassification;
+  private readonly mSources: SourceCollection;
 
   public constructor({
     level,
@@ -55,6 +58,7 @@ export class Classification implements IClassification {
     nonic,
     dissemination,
     declassification,
+    sources,
   }: IClassificationConstructor = {}) {
     this.mLevel = new ClassificationLevel(level);
     this.mCodewords = new CodewordCollection(codewords);
@@ -62,6 +66,7 @@ export class Classification implements IClassification {
     this.mDissemination = new Dissemination(dissemination);
     this.mNonIC = new NonICMarkings(nonic);
     this.mDeclassification = new Declassification(declassification);
+    this.mSources = new SourceCollection(sources);
   }
 
   public toString(): string {
@@ -87,6 +92,7 @@ export class Classification implements IClassification {
       fgi: this.mFgi.toJSON(),
       level: this.mLevel.toJSON(),
       nonic: this.mNonIC.toJSON(),
+      sources: this.mSources.toJSON(),
     };
   }
 
@@ -315,5 +321,37 @@ export class Classification implements IClassification {
 
   public addDeclassificationExemption(...exemptions: string[]): void {
     exemptions.forEach((exemption: string) => this.mDeclassification.addExemption(exemption));
+  }
+
+  /*
+   |---------------------------------------------------------------------------
+   | Sources
+   |---------------------------------------------------------------------------
+   */
+  public getSources(): ISourceConstruct[] {
+    return this.mSources.toArray();
+  }
+  public addSource(...sources: ISourceConstruct[]): void {
+    sources.forEach((source: ISourceConstruct) => {
+      this.mSources.add(source);
+    })
+  }
+  public getSource(index: number): ISourceConstruct | null {
+    return this.mSources.get(index);
+  }
+  public hasSource(source: ISourceConstruct): boolean {
+    return this.mSources.has(source);
+  }
+  public remSource(source: ISourceConstruct): boolean {
+    return this.mSources.rem(this.mSources.find(source));
+  }
+  public getAuthor(iSource: number, iAuthor: number): string | null {
+    const source: ISourceConstruct | null = this.mSources.get(iSource);
+    if (source) {
+      if (source.authors) {
+        return source.authors[iAuthor] || null;
+      }
+    }
+    return null;
   }
 }

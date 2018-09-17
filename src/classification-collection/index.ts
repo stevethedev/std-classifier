@@ -120,6 +120,8 @@ export class ClassificationCollection implements IClassificationCollection {
           result.setDeclassificationDate(classificationDate);
         }
       }
+
+      result.addSource(...classification.getSources());
     });
 
     return result;
