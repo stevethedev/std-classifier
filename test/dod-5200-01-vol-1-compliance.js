@@ -52,7 +52,7 @@ test('US Classifications with a declassification exemption of X1 are converted t
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['X1'] }
+    declassification: { exemptions: ['X1'] }
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -65,7 +65,7 @@ test('US Classifications with a declassification exemption of X2 are converted t
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['X2'] },
+    declassification: { exemptions: ['X2'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -78,7 +78,7 @@ test('US Classifications with a declassification exemption of X3 are converted t
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['X3'] }
+    declassification: { exemptions: ['X3'] }
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -91,7 +91,7 @@ test('US Classifications with a declassification exemption of X4 are converted t
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['X4'] }
+    declassification: { exemptions: ['X4'] }
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -104,7 +104,7 @@ test('US Classifications with a declassification exemption of X5 are converted t
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['X5'] }
+    declassification: { exemptions: ['X5'] }
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -117,7 +117,7 @@ test('US Classifications with a declassification exemption of X6 are converted t
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['X6'] }
+    declassification: { exemptions: ['X6'] }
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -130,7 +130,7 @@ test('US Classifications with a declassification exemption of X7 are converted t
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['X7'] }
+    declassification: { exemptions: ['X7'] }
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -143,7 +143,7 @@ test('US Classifications with a declassification exemption of X8 are converted t
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['X8'] }
+    declassification: { exemptions: ['X8'] }
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -156,7 +156,7 @@ test('US Classifications with a declassification exemption of 25X1 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['25X1'] },
+    declassification: { exemptions: ['25X1'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -169,7 +169,7 @@ test('US Classifications with a declassification exemption of 25X2 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['25X2'] },
+    declassification: { exemptions: ['25X2'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -182,7 +182,7 @@ test('US Classifications with a declassification exemption of 25X3 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['25X3'] },
+    declassification: { exemptions: ['25X3'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -195,7 +195,7 @@ test('US Classifications with a declassification exemption of 25X4 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['25X4'] },
+    declassification: { exemptions: ['25X4'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -208,7 +208,7 @@ test('US Classifications with a declassification exemption of 25X5 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['25X5'] },
+    declassification: { exemptions: ['25X5'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -221,7 +221,7 @@ test('US Classifications with a declassification exemption of 25X6 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['25X6'] },
+    declassification: { exemptions: ['25X6'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -234,7 +234,7 @@ test('US Classifications with a declassification exemption of 25X7 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['25X7'] },
+    declassification: { exemptions: ['25X7'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -247,7 +247,7 @@ test('US Classifications with a declassification exemption of 25X8 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['25X8'] },
+    declassification: { exemptions: ['25X8'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -260,7 +260,7 @@ test('US Classifications with a declassification exemption of 25X9 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['25X9'] },
+    declassification: { exemptions: ['25X9'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -273,7 +273,7 @@ test('US Classifications with a declassification exemption of 50X1-HUM retains t
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['50X1-HUM'] },
+    declassification: { exemptions: ['50X1-HUM'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -286,7 +286,7 @@ test('US Classifications with a declassification exemption of 50X2-WMD retains t
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['50X2-WMD'] },
+    declassification: { exemptions: ['50X2-WMD'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -299,7 +299,7 @@ test('US Classifications with a declassification exemption of 50X1 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['50X1'] },
+    declassification: { exemptions: ['50X1'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -312,7 +312,7 @@ test('US Classifications with a declassification exemption of 50X2 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['50X2'] },
+    declassification: { exemptions: ['50X2'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -325,7 +325,7 @@ test('US Classifications with a declassification exemption of 50X3 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['50X3'] },
+    declassification: { exemptions: ['50X3'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -338,7 +338,7 @@ test('US Classifications with a declassification exemption of 50X4 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['50X4'] },
+    declassification: { exemptions: ['50X4'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -351,7 +351,7 @@ test('US Classifications with a declassification exemption of 50X5 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['50X5'] },
+    declassification: { exemptions: ['50X5'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -364,7 +364,7 @@ test('US Classifications with a declassification exemption of 50X6 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['50X6'] },
+    declassification: { exemptions: ['50X6'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -377,7 +377,7 @@ test('US Classifications with a declassification exemption of 50X7 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['50X7'] },
+    declassification: { exemptions: ['50X7'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -390,7 +390,7 @@ test('US Classifications with a declassification exemption of 50X8 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['50X8'] },
+    declassification: { exemptions: ['50X8'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -403,7 +403,7 @@ test('US Classifications with a declassification exemption of 50X9 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['50X9'] },
+    declassification: { exemptions: ['50X9'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -417,7 +417,7 @@ test('US Classifications with a declassification exemption of 75X1 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['75X1'] },
+    declassification: { exemptions: ['75X1'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -430,7 +430,7 @@ test('US Classifications with a declassification exemption of 75X2 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['75X2'] },
+    declassification: { exemptions: ['75X2'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -443,7 +443,7 @@ test('US Classifications with a declassification exemption of 75X3 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['75X3'] },
+    declassification: { exemptions: ['75X3'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -456,7 +456,7 @@ test('US Classifications with a declassification exemption of 75X4 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['75X4'] },
+    declassification: { exemptions: ['75X4'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -469,7 +469,7 @@ test('US Classifications with a declassification exemption of 75X5 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['75X5'] },
+    declassification: { exemptions: ['75X5'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -482,7 +482,7 @@ test('US Classifications with a declassification exemption of 75X6 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['75X6'] },
+    declassification: { exemptions: ['75X6'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -495,7 +495,7 @@ test('US Classifications with a declassification exemption of 75X7 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['75X7'] },
+    declassification: { exemptions: ['75X7'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -508,7 +508,7 @@ test('US Classifications with a declassification exemption of 75X8 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['75X8'] },
+    declassification: { exemptions: ['75X8'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -521,7 +521,7 @@ test('US Classifications with a declassification exemption of 75X9 retains the c
   const today = new Date();
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['75X9'] },
+    declassification: { exemptions: ['75X9'] },
   });
 
   t.is(classification.toString(), 'TOP SECRET');
@@ -555,7 +555,7 @@ test('Classifications should track the most restrictive declassification date', 
   const DATE = '30000101';
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { date: DATE, rules: ['X1', 'X2', '75X1'] }
+    declassification: { date: DATE, exemptions: ['X1', 'X2', '75X1'] }
   });
 
   t.is(classification.getDeclassificationDate().getFullYear(), 3000);
@@ -564,7 +564,7 @@ test('Classifications should drop a rule if it is less restrictive than a date',
   const DATE = '30000101';
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { date: DATE, rules: ['X1', 'X2', '75X1'] }
+    declassification: { date: DATE, exemptions: ['X1', 'X2', '75X1'] }
   });
 
   t.is(classification.getDeclassificationExemption(), null);
@@ -572,7 +572,7 @@ test('Classifications should drop a rule if it is less restrictive than a date',
 test('Classifications should throw an error if they have an unrecognized exemption', (t) => {
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
-    declassification: { rules: ['ABCDEFG'] }
+    declassification: { exemptions: ['ABCDEFG'] }
   });
 
   t.throws(() => classification.getDeclassificationExemption());
@@ -591,7 +591,7 @@ test('Classification should use the first declassification exemption with the hi
   const classification = new Classification({
     level: Classification.levels.TOP_SECRET,
     declassification: {
-      rules: [
+      exemptions: [
         '75X1', '75X2', '75X3', '75X4', '75X5', '75X6', '75X7', '75X8', '75X9',
         'X1', 'X2', 'X3', 'X4', 'X5', 'X6', 'X7', 'X8',
         '25X1', '25X2', '25X3', '25X4', '25X5', '25X6', '25X7', '25X8', '25X9',
@@ -606,14 +606,14 @@ test('Classification should use the first declassification exemption with the hi
 test('Serialized classifications should record the declassification rules', (t) => {
   const classification = new Classification({
     declassification: {
-      rules: [ '75X1', '75X2' ]
+      exemptions: [ '75X1', '75X2' ]
     }
   });
 
   const { declassification } = classification.toJSON();
 
-  t.is(declassification.rules[0], '75X1');
-  t.is(declassification.rules[1], '75X2');
+  t.is(declassification.exemptions[0], '75X1');
+  t.is(declassification.exemptions[1], '75X2');
 });
 test('Serialized classifications should record the declassification date', (t) => {
   const classification = new Classification({
@@ -642,9 +642,9 @@ test('Serialized classifications should record the creation date', (t) =>{
 test('Derivative classifications should combine the declassification exemptions', (t) => {
   const cc = new ClassificationCollection();
 
-  cc.add(new Classification({ declassification: { rules: ['25X3'] } }));
-  cc.add(new Classification({ declassification: { rules: ['25X1'] } }));
-  cc.add(new Classification({ declassification: { rules: ['25X2'] } }));
+  cc.add(new Classification({ declassification: { exemptions: ['25X3'] } }));
+  cc.add(new Classification({ declassification: { exemptions: ['25X1'] } }));
+  cc.add(new Classification({ declassification: { exemptions: ['25X2'] } }));
 
   const classification = cc.reduce();
 

@@ -1,7 +1,7 @@
 export interface IDeclassificationConstruct {
-  created ?: Date | string | number;
-  date    ?: Date | string | number | null;
-  rules   ?: string[];
+  created    ?: Date | string | number;
+  date       ?: Date | string | number | null;
+  exemptions ?: string[];
 }
 
 export interface IDeclassification {

@@ -9,6 +9,7 @@ import { IClassification, IClassificationConstructor } from './interface';
 import { CLASSIFICATION_LEVEL, ClassificationLevel } from '../classification-level';
 import { CodewordCollection } from '../codeword-collection';
 import { Declassification } from '../declassification';
+import { IDeclassificationOffset } from '../declassification/rule/interface';
 import { Dissemination } from '../dissemination';
 import { FgiCollection } from '../fgi-collection';
 import { IFgiConstruct } from '../fgi/interface';
@@ -35,6 +36,9 @@ export class Classification implements IClassification {
 
   public static deserialize(json: string): Classification {
     return new Classification(JSON.parse(json));
+  }
+  public static addDeclassificationRule(name: string, offset: IDeclassificationOffset): void {
+    Declassification.addRule(name, offset);
   }
 
   private readonly mLevel: ClassificationLevel;
@@ -309,7 +313,7 @@ export class Classification implements IClassification {
     return this.mDeclassification.getExemptionList();
   }
 
-  public addDeclassificationExemptions(...exemptions: string[]): void {
+  public addDeclassificationExemption(...exemptions: string[]): void {
     exemptions.forEach((exemption: string) => this.mDeclassification.addExemption(exemption));
   }
 }

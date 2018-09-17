@@ -84,12 +84,12 @@ export class Declassification implements IDeclassification {
   constructor({
     created = new Date(),
     date = null,
-    rules = [],
+    exemptions = [],
   }: IDeclassificationConstruct = {}) {
     this.setClassificationDate(created);
     this.setDate(date);
-    for (const ruleName of rules) {
-      this.addExemption(ruleName);
+    for (const exemption of exemptions) {
+      this.addExemption(exemption);
     }
   }
 
@@ -97,7 +97,7 @@ export class Declassification implements IDeclassification {
     return ({
       created: parse(this.mDate),
       date: this.mDeclassifyOn,
-      rules: this.getExemptionList(),
+      exemptions: this.getExemptionList(),
     });
   }
 

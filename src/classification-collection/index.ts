@@ -109,7 +109,7 @@ export class ClassificationCollection implements IClassificationCollection {
         classification.getClassificationDate().getTime(),
       ));
 
-      result.addDeclassificationExemptions(
+      result.addDeclassificationExemption(
         ...classification.getDeclassificationExemptions(),
       );
 
