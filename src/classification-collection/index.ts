@@ -6,10 +6,35 @@
 
 import { Classification } from '../classification';
 import { IClassification, IClassificationConstructor } from '../classification/interface';
-import { IClassificationCollection } from './interface';
+import {
+  IClassificationCollection,
+  IClassificationCollectionConstruct,
+  IClassificationCollectionJson,
+} from './interface';
 
 export class ClassificationCollection implements IClassificationCollection {
+  public static deserialize(serialized: string): ClassificationCollection {
+    console.log(serialized);
+    const json = JSON.parse(serialized) as IClassificationCollectionJson;
+    console.log(json);
+    return new ClassificationCollection(json.classifications.map(
+      (classification) => new Classification(classification),
+    ));
+  }
+
   private readonly mClassifications: Array<IClassification | null> = [];
+
+  public constructor(classifications: IClassificationCollectionConstruct = []) {
+    for (const classification of classifications) {
+      this.add(classification);
+    }
+  }
+
+  public toJSON(): IClassificationCollectionJson {
+    const classifications = (this.mClassifications.filter(Boolean) as IClassification[])
+      .map((classification: IClassification): IClassificationConstructor => (classification).toJSON());
+    return { classifications };
+  }
 
   /** Get the number of Classification elements within this collection. */
   public count(): number {

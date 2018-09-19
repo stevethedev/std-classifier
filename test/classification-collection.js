@@ -134,16 +134,27 @@ test('Classification Collection may be serialized into an array of serialized cl
   t.is(json.classifications[1].level, 1);
   t.is(json.classifications[2].level, 2);
 });
-test('Classification Collection may be unserialized from an array of serialized classifications', (t) => {
-  const cc = ClassificationCollection.unserialize({
+test('Classification Collection may be deserialized from an array of serialized classifications', (t) => {
+  const cc = ClassificationCollection.deserialize(JSON.stringify({
     classifications: [
       { level: 0 },
       { level: 1 },
       { level: 2 },
     ]
-  });
+  }));
 
   t.is(cc.get(0).getClassificationLevel(), 0);
   t.is(cc.get(1).getClassificationLevel(), 1);
   t.is(cc.get(2).getClassificationLevel(), 2);
+});
+test('Classification Collection may count the number of child classifications', (t) => {
+  const cc = new ClassificationCollection();
+
+  t.is(cc.count(), 0);
+
+  cc.add(new  Classification());
+  t.is(cc.count(), 1);
+
+  cc.add(new Classification());
+  t.is(cc.count(), 2);
 });
