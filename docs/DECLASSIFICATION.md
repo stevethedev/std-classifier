@@ -84,14 +84,17 @@ classification.getDeclassificationDate(); // Returns 500 years in the future.
 * **Foreign Government Intelligence (FGI)** is exempt from the
   declassification dates.
 
-### Get the
-  getClassificationDate(): Date;
-  setClassificationDate(date: Date | string | number): void;
-  getDeclassificationDate(): Date | null;
-  setDeclassificationDate(date: Date | string | number | null): void;
-  getDeclassificationRawDate(): Date | null;
-  getDeclassificationExemption(): string | null;
-  getDeclassificationExemptions(): string[];
-  addDeclassificationExemptions(...exemptions: string[]): void;
+### Get other classification date information
+
+```javascript
+getClassificationDate(): Date;
+setClassificationDate(date: Date | string | number): void;
+getDeclassificationDate(): Date | null;
+setDeclassificationDate(date: Date | string | number | null): void;
+getDeclassificationRawDate(): Date | null;
+getDeclassificationExemption(): string | null;
+getDeclassificationExemptions(): string[];
+addDeclassificationExemptions(...exemptions: string[]): void;
+```
 
 [DoD Manual 5200.01 Volume 1]: http://www.esd.whs.mil/Portals/54/Documents/DD/issuances/dodm/520001_vol1.pdf
