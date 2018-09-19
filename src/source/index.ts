@@ -16,6 +16,10 @@ export class Source implements ISource {
     };
   }
 
+  public getName(): string | null {
+    return this.mName;
+  }
+
   public getAuthors(): string[] {
     return this.mAuthors.slice(0);
   }

@@ -18,18 +18,7 @@ export class SourceCollection implements ISourceCollection {
       result.push(source);
     });
 
-    return result.sort((aSource: ISourceConstruct, bSource: ISourceConstruct) => {
-      const ajSource = JSON.stringify(aSource);
-      const bjSource = JSON.stringify(bSource);
-
-      if (ajSource > bjSource) {
-        return -1;
-      }
-      if (ajSource < bjSource) {
-        return 1;
-      }
-      return 0;
-    });
+    return result;
   }
 
   public toArray(): ISourceConstruct[] {
@@ -62,16 +51,28 @@ export class SourceCollection implements ISourceCollection {
   }
 
   /** Find the first index of an element that matches the given description. */
-  public find(source: ISourceConstruct): number {
-    let index = -1;
-    const compare = JSON.stringify(new Source(source));
-    this.forEach((iSource: ISourceConstruct, iIndex: number, terminator: () => void) => {
-      if (compare === JSON.stringify(iSource)) {
-        index = iIndex;
-        terminator();
-      }
-    });
-    return index;
+  public find({ name: fName, authors: fAuthors }: ISourceConstruct): number {
+    const matches = this.mSources
+      .map((source, index) => index)
+      .filter((index: number): boolean => Boolean(this.mSources[index]))
+      .filter((index: number): boolean => ('undefined' === typeof fName
+        || fName === (this.mSources[index] as ISource).getName()))
+      .filter((index: number): boolean => {
+        if ('undefined' !== typeof fAuthors) {
+          const sAuthors = (this.mSources[index] as ISource).getAuthors();
+          if (fAuthors.length === 0) {
+            return sAuthors.length === 0;
+          }
+          for (const author of fAuthors) {
+            if (!sAuthors.includes(author)) {
+              return false;
+            }
+          }
+        }
+        return true;
+      });
+
+    return matches.length ? matches[0] : -1;
   }
 
   /** Return the number of valid elements in this collection. */

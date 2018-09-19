@@ -334,7 +334,7 @@ export class Classification implements IClassification {
   public addSource(...sources: ISourceConstruct[]): void {
     sources.forEach((source: ISourceConstruct) => {
       this.mSources.add(source);
-    })
+    });
   }
   public getSource(index: number): ISourceConstruct | null {
     return this.mSources.get(index);

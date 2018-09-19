@@ -29,7 +29,7 @@ export class DeclassificationRule implements IDeclassificationRule {
     return Boolean(this.offset.deprecated);
   }
 
-  constructor(id: string, { deprecated = false, years = 0 }: IDeclassificationOffset) {
+  constructor(id: string, { deprecated = false, years = 0 }: IDeclassificationOffset = {}) {
     this.id = id;
     this.offset = { deprecated, years };
   }
