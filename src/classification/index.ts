@@ -16,6 +16,7 @@ import { IFgiConstruct } from '../fgi/interface';
 import { NonICMarkings } from '../non-ic-markings';
 import { SourceCollection } from '../source-collection';
 import { ISourceConstruct } from '../source/interface';
+import { ReasonCollection } from '../reason-collection';
 
 const reduceLevel = (level: ClassificationLevel, fgi: FgiCollection): string => {
   let maxLevel = level.getLevel();
@@ -50,6 +51,7 @@ export class Classification implements IClassification {
   private readonly mNonIC: NonICMarkings;
   private readonly mDeclassification: Declassification;
   private readonly mSources: SourceCollection;
+  private readonly mReasons: ReasonCollection;
 
   public constructor({
     level,
@@ -59,6 +61,7 @@ export class Classification implements IClassification {
     dissemination,
     declassification,
     sources,
+    reasons,
   }: IClassificationConstructor = {}) {
     this.mLevel = new ClassificationLevel(level);
     this.mCodewords = new CodewordCollection(codewords);
@@ -67,6 +70,7 @@ export class Classification implements IClassification {
     this.mNonIC = new NonICMarkings(nonic);
     this.mDeclassification = new Declassification(declassification);
     this.mSources = new SourceCollection(sources);
+    this.mReasons = new ReasonCollection(reasons);
   }
 
   public toString(): string {
@@ -92,6 +96,7 @@ export class Classification implements IClassification {
       fgi: this.mFgi.toJSON(),
       level: this.mLevel.toJSON(),
       nonic: this.mNonIC.toJSON(),
+      reasons: this.mReasons.toJSON(),
       sources: this.mSources.toJSON(),
     };
   }
@@ -353,5 +358,32 @@ export class Classification implements IClassification {
       }
     }
     return null;
+  }
+
+  /*
+   |---------------------------------------------------------------------------
+   | Classification Reasons
+   |---------------------------------------------------------------------------
+   */
+  public getReasons(): string[] {
+    return this.mReasons.toArray();
+  }
+
+  public addReason(...reasons: string[]): void {
+    for (const reason of reasons) {
+      this.mReasons.add(reason);
+    }
+  }
+
+  public getReason(index: number): string | null {
+    return this.mReasons.get(index);
+  }
+
+  public hasReason(reason: string): boolean {
+    return this.mReasons.has(reason);
+  }
+
+  public remReason(reason: string): boolean {
+    return this.mReasons.rem(this.mReasons.find(reason));
   }
 }
