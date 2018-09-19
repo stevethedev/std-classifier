@@ -5,8 +5,10 @@
  */
 
 import { CLASSIFICATION_LEVEL } from '../classification-level/enum';
+import { IDeclassificationConstruct } from '../declassification/interface';
 import { IDisseminationConstruct } from '../dissemination/interface';
 import { IFgiConstruct } from '../fgi/interface';
+import { ISourceConstruct } from '../source/interface';
 
 export interface IClassificationConstructor {
   level ?: CLASSIFICATION_LEVEL;
@@ -14,6 +16,8 @@ export interface IClassificationConstructor {
   fgi ?: IFgiConstruct[];
   nonic ?: string[];
   dissemination ?: IDisseminationConstruct;
+  declassification ?: IDeclassificationConstruct;
+  sources ?: ISourceConstruct[];
 }
 
 export interface IClassification {
@@ -75,4 +79,20 @@ export interface IClassification {
   addEyes(...nations: string[]): IClassification;
   hasEyes(nation: string): boolean;
   remEyes(nation: string): boolean;
+
+  getClassificationDate(): Date;
+  setClassificationDate(date: Date | string | number): void;
+  getDeclassificationDate(): Date | null;
+  setDeclassificationDate(date: Date | string | number | null): void;
+  getDeclassificationRawDate(): Date | null;
+  getDeclassificationExemption(): string | null;
+  getDeclassificationExemptions(): string[];
+  addDeclassificationExemption(...exemptions: string[]): void;
+
+  getSources(): ISourceConstruct[];
+  addSource(...source: ISourceConstruct[]): void;
+  getSource(index: number): ISourceConstruct | null;
+  hasSource(source: ISourceConstruct): boolean;
+  remSource(source: ISourceConstruct): boolean;
+  getAuthor(iSource: number, iAuthor: number): string | null;
 }

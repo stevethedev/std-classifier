@@ -8,10 +8,14 @@ import { IClassification, IClassificationConstructor } from './interface';
 
 import { CLASSIFICATION_LEVEL, ClassificationLevel } from '../classification-level';
 import { CodewordCollection } from '../codeword-collection';
+import { Declassification } from '../declassification';
+import { IDeclassificationOffset } from '../declassification/rule/interface';
 import { Dissemination } from '../dissemination';
 import { FgiCollection } from '../fgi-collection';
 import { IFgiConstruct } from '../fgi/interface';
 import { NonICMarkings } from '../non-ic-markings';
+import { SourceCollection } from '../source-collection';
+import { ISourceConstruct } from '../source/interface';
 
 const reduceLevel = (level: ClassificationLevel, fgi: FgiCollection): string => {
   let maxLevel = level.getLevel();
@@ -30,8 +34,13 @@ const reduceLevel = (level: ClassificationLevel, fgi: FgiCollection): string => 
 };
 
 export class Classification implements IClassification {
+  public static levels: (typeof CLASSIFICATION_LEVEL) = CLASSIFICATION_LEVEL;
+
   public static deserialize(json: string): Classification {
     return new Classification(JSON.parse(json));
+  }
+  public static addDeclassificationRule(name: string, offset: IDeclassificationOffset): void {
+    Declassification.addRule(name, offset);
   }
 
   private readonly mLevel: ClassificationLevel;
@@ -39,6 +48,8 @@ export class Classification implements IClassification {
   private readonly mDissemination: Dissemination;
   private readonly mFgi: FgiCollection;
   private readonly mNonIC: NonICMarkings;
+  private readonly mDeclassification: Declassification;
+  private readonly mSources: SourceCollection;
 
   public constructor({
     level,
@@ -46,12 +57,16 @@ export class Classification implements IClassification {
     fgi,
     nonic,
     dissemination,
+    declassification,
+    sources,
   }: IClassificationConstructor = {}) {
     this.mLevel = new ClassificationLevel(level);
     this.mCodewords = new CodewordCollection(codewords);
     this.mFgi = new FgiCollection(fgi);
     this.mDissemination = new Dissemination(dissemination);
     this.mNonIC = new NonICMarkings(nonic);
+    this.mDeclassification = new Declassification(declassification);
+    this.mSources = new SourceCollection(sources);
   }
 
   public toString(): string {
@@ -72,10 +87,12 @@ export class Classification implements IClassification {
   public toJSON(): IClassificationConstructor {
     return {
       codewords: this.mCodewords.toJSON(),
+      declassification: this.mDeclassification.toJSON(),
       dissemination: this.mDissemination.toJSON(),
       fgi: this.mFgi.toJSON(),
       level: this.mLevel.toJSON(),
       nonic: this.mNonIC.toJSON(),
+      sources: this.mSources.toJSON(),
     };
   }
 
@@ -259,5 +276,82 @@ export class Classification implements IClassification {
   }
   public remEyes(nation: string): boolean {
     return this.mDissemination.remEyes(nation);
+  }
+
+  /*
+   |---------------------------------------------------------------------------
+   | Declassification Information
+   |---------------------------------------------------------------------------
+   */
+  public getClassificationDate(): Date {
+    return this.mDeclassification.getClassificationDate();
+  }
+
+  public setClassificationDate(date: string | Date | number): void {
+    this.mDeclassification.setClassificationDate(date);
+  }
+
+  public setDeclassificationDate(date: Date | string | number | null): void {
+    this.mDeclassification.setDate(date);
+  }
+
+  public getDeclassificationDate(): Date | null {
+    // FGI information is exempt from declassification
+    if (this.getFgi().length) {
+      return null;
+    }
+    return this.mDeclassification.getDate();
+  }
+
+  public getDeclassificationRawDate(): Date | null {
+    return this.mDeclassification.getRawDate();
+  }
+
+  public getDeclassificationExemption(): string | null {
+    // FGI information is exempt from declassification
+    if (this.getFgi().length) {
+      return null;
+    }
+    return this.mDeclassification.getExemption();
+  }
+
+  public getDeclassificationExemptions(): string[] {
+    return this.mDeclassification.getExemptionList();
+  }
+
+  public addDeclassificationExemption(...exemptions: string[]): void {
+    exemptions.forEach((exemption: string) => this.mDeclassification.addExemption(exemption));
+  }
+
+  /*
+   |---------------------------------------------------------------------------
+   | Sources
+   |---------------------------------------------------------------------------
+   */
+  public getSources(): ISourceConstruct[] {
+    return this.mSources.toArray();
+  }
+  public addSource(...sources: ISourceConstruct[]): void {
+    sources.forEach((source: ISourceConstruct) => {
+      this.mSources.add(source);
+    });
+  }
+  public getSource(index: number): ISourceConstruct | null {
+    return this.mSources.get(index);
+  }
+  public hasSource(source: ISourceConstruct): boolean {
+    return this.mSources.has(source);
+  }
+  public remSource(source: ISourceConstruct): boolean {
+    return this.mSources.rem(this.mSources.find(source));
+  }
+  public getAuthor(iSource: number, iAuthor: number): string | null {
+    const source: ISourceConstruct | null = this.mSources.get(iSource);
+    if (source) {
+      if (source.authors) {
+        return source.authors[iAuthor] || null;
+      }
+    }
+    return null;
   }
 }

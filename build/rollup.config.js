@@ -11,16 +11,20 @@ export default {
     output: {
       name: 'classification',
       file: outFolder('classifier.js'),
-      format: 'umd'
+      format: 'umd',
+      globals: {
+        'date-fns': 'dateFns'
+      },
     },
+    external: ['date-fns'],
     plugins: [
-        typescript({
-          typescript: require('typescript'),
-          tsconfigOverride: {
-            compilerOptions: {
-              module: 'es2015'
-            }
+      typescript({
+        typescript: require('typescript'),
+        tsconfigOverride: {
+          compilerOptions: {
+            module: 'es2015'
           }
-        })
+        }
+      })
     ],
 };
