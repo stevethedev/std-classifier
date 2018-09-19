@@ -66,6 +66,3 @@ test('Classification serialization creates a valid sources parameter', (t) => {
   t.is(json.authors[0], source.authors[0]);
   t.is(json.authors[1], source.authors[1]);
 });
-test.todo('Classification should be able to count the number of sources');
-test.todo('Classification should be able to find a particular source');
-test.todo('Classification should be able to remove a source');
