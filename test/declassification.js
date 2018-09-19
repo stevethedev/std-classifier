@@ -1,5 +1,6 @@
 import test from 'ava';
 import { DeclassificationRule } from '../src/declassification/rule';
+import { Classification } from '../src/main';
 
 test('Declassification rules with higher years should be prioritized', (t) => {
   const aRule = new DeclassificationRule('foo', { years: 5 });
@@ -21,4 +22,14 @@ test('Declassification rules should not prioritize either when they are equal', 
 
   t.is(DeclassificationRule.compare(aRule, bRule), 0);
   t.is(DeclassificationRule.compare(bRule, aRule), 0);
+});
+test('Declassification rules may be added through an interface', (t) => {
+  Classification.addDeclassificationRule('IMM', { years: 0 });
+  const classification = new Classification();
+
+  classification.addDeclassificationExemption('IMM');
+
+  const today = new Date();
+
+  t.is(classification.getDeclassificationDate().getFullYear(), today.getFullYear());
 });

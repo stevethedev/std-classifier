@@ -127,3 +127,28 @@ test('The source collection iterator can be stopped prematurely', (t) => {
 
   t.is(counter, 1);
 });
+test('Classifications can check whether a particular source exists', (t) => {
+  const classification = new Classification({ sources: [ { name: 'Source A' } ] });
+
+  t.is(classification.hasSource({ name: 'Source B' }), false);
+  t.is(classification.hasSource({ name: 'Source A' }), true);
+});
+test('Classifications can remove a source by name', (t) => {
+  const classification = new Classification({ sources: [ { name: 'Source A' } ] });
+
+  t.is(classification.remSource({ name: 'Source A' }), true);
+  t.is(classification.remSource({ name: 'Source A' }), false);
+});
+test('Classifications can check whether a particular author exists', (t) => {
+  const classification = new Classification({
+    sources: [
+      { name: 'Source A', authors: ['A', 'B'] },
+      { name: 'Source B', authors: ['C', 'D'] },
+    ]
+  });
+
+  t.is(classification.getAuthor(0, 0), 'A');
+  t.is(classification.getAuthor(0, 1), 'B');
+  t.is(classification.getAuthor(1, 0), 'C');
+  t.is(classification.getAuthor(1, 1), 'D');
+});
