@@ -8,6 +8,7 @@ import { CLASSIFICATION_LEVEL } from '../classification-level/enum';
 import { IDeclassificationConstruct } from '../declassification/interface';
 import { IDisseminationConstruct } from '../dissemination/interface';
 import { IFgiConstruct } from '../fgi/interface';
+import { IReasonConstruct } from '../reason-collection/interface';
 import { ISourceConstruct } from '../source/interface';
 
 export interface IClassificationConstructor {
@@ -17,6 +18,7 @@ export interface IClassificationConstructor {
   nonic ?: string[];
   dissemination ?: IDisseminationConstruct;
   declassification ?: IDeclassificationConstruct;
+  reasons ?: IReasonConstruct[];
   sources ?: ISourceConstruct[];
 }
 
@@ -95,4 +97,10 @@ export interface IClassification {
   hasSource(source: ISourceConstruct): boolean;
   remSource(source: ISourceConstruct): boolean;
   getAuthor(iSource: number, iAuthor: number): string | null;
+
+  getReasons(): IReasonConstruct[];
+  addReason(...reasons: IReasonConstruct[]): void;
+  getReason(index: number): IReasonConstruct | null;
+  hasReason(reason: IReasonConstruct): boolean;
+  remReason(reason: IReasonConstruct): boolean;
 }

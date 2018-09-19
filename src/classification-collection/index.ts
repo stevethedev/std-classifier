@@ -122,6 +122,7 @@ export class ClassificationCollection implements IClassificationCollection {
       }
 
       result.addSource(...classification.getSources());
+      result.addReason(...classification.getReasons());
     });
 
     return result;
