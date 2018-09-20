@@ -1,5 +1,5 @@
 import test from 'ava';
-import { Classification } from '../src/main';
+import { Classification, ClassificationCollection } from '../src/main';
 
 test('Dissemination controls default to blank', (t) => {
   const classification = new Classification();
@@ -257,4 +257,13 @@ test('Dissemination controls can combine many controls at once', (t) => {
     classification.toString(),
     'TOP SECRET//RSEN,ORCON,PROPIN,DEA SENSITIVE,USA/CAN EYES ONLY'
   );
+});
+
+test('Combining classification objects removes conflicting REL TO', (t) => {
+  const cc = new ClassificationCollection([
+    new Classification({ level: 4, dissemination: { rel: [ 'AUS', 'CAN', 'GBR' ] } }),
+    new Classification({ level: 4, dissemination: { rel: [ 'CAN' ] } }),
+  ]);
+
+  t.deepEqual(cc.reduce().getRel(), ['CAN']);
 });

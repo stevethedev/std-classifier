@@ -14,9 +14,7 @@ import {
 
 export class ClassificationCollection implements IClassificationCollection {
   public static deserialize(serialized: string): ClassificationCollection {
-    console.log(serialized);
     const json = JSON.parse(serialized) as IClassificationCollectionJson;
-    console.log(json);
     return new ClassificationCollection(json.classifications.map(
       (classification) => new Classification(classification),
     ));
@@ -108,6 +106,7 @@ export class ClassificationCollection implements IClassificationCollection {
       },
     });
 
+    let first = true;
     this.forEach((classification: IClassification) => {
       result.setClassificationLevel(Math.max(
         result.getClassificationLevel(),
@@ -123,7 +122,19 @@ export class ClassificationCollection implements IClassificationCollection {
       result.setPropin(result.isPropin() || classification.isPropin());
       result.setRelido(result.isRelido() || classification.isRelido());
       result.setRsen(result.isRsen() || classification.isRsen());
-      result.addRel(...[...result.getRel(), ...classification.getRel()]);
+      {
+        const cRels = classification.getRel();
+        const rRels = result.getRel();
+
+        if (first) {
+          result.addRel(...cRels);
+        }
+        rRels.forEach((rel: string) => {
+          if (!cRels.includes(rel)) {
+            result.remRel(rel);
+          }
+        });
+      }
       result.addEyes(...[...result.getEyes(), ...classification.getEyes()]);
 
       result.addCodeword(...classification.getCodewords());
@@ -148,6 +159,7 @@ export class ClassificationCollection implements IClassificationCollection {
 
       result.addSource(...classification.getSources());
       result.addReason(...classification.getReasons());
+      first = false;
     });
 
     return result;

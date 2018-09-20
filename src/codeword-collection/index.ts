@@ -35,7 +35,7 @@ export class CodewordCollection implements ICodewordCollection {
   }
 
   public toString(): string {
-    return this.mCodewords.join('/');
+    return this.mCodewords.filter(Boolean).sort().join('/');
   }
 
   /** Add a new codeword to the collection. */

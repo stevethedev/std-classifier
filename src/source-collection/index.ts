@@ -77,7 +77,7 @@ export class SourceCollection implements ISourceCollection {
 
   /** Return the number of valid elements in this collection. */
   public count(): number {
-    return this.mSources.filter((x) => x).length;
+    return this.mSources.filter(Boolean).length;
   }
 
   /** Iterate the valid elements in this collection. */

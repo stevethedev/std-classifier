@@ -95,7 +95,7 @@ export class Dissemination implements IDissemination {
       reduceFisa(this.mFisa),
       reduceReleasability(this.mNoforn, this.mRel.sort(), this.mEyes.sort()),
     ];
-    return result.filter((x) => x).join(',');
+    return result.filter(Boolean).join(',');
   }
 
   public toJSON(): IDisseminationConstruct {

@@ -10,7 +10,7 @@ export class ReasonCollection implements IReasonCollection {
   }
 
   public toJSON(): string[] {
-    return this.mReasons.slice().filter((x) => x).sort() as string[];
+    return this.mReasons.slice().filter(Boolean).sort() as string[];
   }
 
   public toArray(): string[] {

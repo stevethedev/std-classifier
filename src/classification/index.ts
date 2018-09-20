@@ -14,9 +14,9 @@ import { Dissemination } from '../dissemination';
 import { FgiCollection } from '../fgi-collection';
 import { IFgiConstruct } from '../fgi/interface';
 import { NonICMarkings } from '../non-ic-markings';
+import { ReasonCollection } from '../reason-collection';
 import { SourceCollection } from '../source-collection';
 import { ISourceConstruct } from '../source/interface';
-import { ReasonCollection } from '../reason-collection';
 
 const reduceLevel = (level: ClassificationLevel, fgi: FgiCollection): string => {
   let maxLevel = level.getLevel();
