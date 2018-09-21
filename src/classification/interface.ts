@@ -30,6 +30,9 @@ export interface IClassification {
   toJSON(): IClassificationConstructor;
   serialize(): string;
 
+  combine(...classification: IClassification[]): void;
+  clone(): IClassification;
+
   // This method is responsible for setting the overall classification level
   // (i.e. UNCLASSIFIED, CONFIDENTIAL, SECRET, TOP SECRET). This function
   // accepts a proprietary numeric format to avoid close ties to en-US.

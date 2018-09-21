@@ -17,6 +17,7 @@ export interface IDisseminationConstruct {
 export interface IDissemination {
   toString(classification: IClassification): string;
   toJSON(): IDisseminationConstruct;
+  combine(...dissemination: IDissemination[]): void;
 
   setRsen(rsen: boolean): IDissemination;
   isRsen(): boolean;

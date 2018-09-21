@@ -2,6 +2,8 @@ export interface INonICMarkings {
   toString(): string;
   toJSON(): string[];
 
+  combine(...nonIcMarkings: INonICMarkings[]): void;
+
   get(): string[];
 
   add(nonIc: string): INonICMarkings;

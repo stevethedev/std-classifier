@@ -101,6 +101,27 @@ export class Declassification implements IDeclassification {
     });
   }
 
+  public combine(...declassification: IDeclassification[]): void {
+    for (const declass of declassification) {
+      this.setClassificationDate(Math.max(
+        this.getClassificationDate().getTime(),
+        declass.getClassificationDate().getTime(),
+      ));
+
+      for (const exemption of declass.getExemptionList()) {
+        this.addExemption(exemption);
+      }
+
+      const classificationDate = declass.getRawDate();
+      if (classificationDate) {
+        const resultDate = this.getRawDate();
+        if (!resultDate || resultDate.getTime() < classificationDate.getTime()) {
+          this.setDate(classificationDate);
+        }
+      }
+    }
+  }
+
   public getExemptionList(): string[] {
     return idsToRules(deduplicate<number>(rulesToIds(this.mExemptions)));
   }

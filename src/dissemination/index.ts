@@ -1,6 +1,53 @@
 import { CLASSIFICATION_LEVEL } from '../classification-level/enum';
 import { IClassification } from '../classification/interface';
+import { TetragraphCollection } from '../tetragraph-collection';
+import { ITetragraph } from '../tetragraph/interface';
 import { IDissemination, IDisseminationConstruct } from './interface';
+
+const reduceEyes = (rel: string[], eyes: string[]): string => {
+  const result: string[] = eyes.slice();
+  if (rel.length) {
+    for (let iResult = 0; iResult < result.length; ++iResult) {
+      if (-1 === rel.indexOf(result[iResult])) {
+        result.splice(iResult--, 1);
+      }
+    }
+  }
+
+  const { tetragraphs, trigraphs }: { tetragraphs: string[], trigraphs: string[] } = sortTetragraphs(result);
+
+  return `USA/${[...tetragraphs, ...trigraphs].join('/')} EYES ONLY`;
+};
+
+const sortTetragraphs = (rel: string[]): { tetragraphs: string[], trigraphs: string[] } => {
+  const tc = TetragraphCollection.getSingleton();
+  const tetragraphs: string[] = [];
+  const trigraphs: string[] = [];
+
+  // Categorize everything as "tetragraph" or "non-tetragraph"
+  for (const item of rel) {
+    (tc.hasName(item) ? tetragraphs : trigraphs).push(item);
+  }
+
+  // Strip out everything that is part of a tetragraph
+  for (const nTetragraph of tetragraphs) {
+    const tetragraph = tc.get(tc.findName(nTetragraph)) as ITetragraph;
+    for (let iItem = 0; iItem < trigraphs.length; ++iItem) {
+      if (tetragraph.hasTrigraph(trigraphs[iItem])) {
+        trigraphs.splice(iItem--, 1);
+      }
+    }
+  }
+
+  return { tetragraphs, trigraphs };
+};
+
+const reduceRel = (rel: string[]): string => {
+  const { tetragraphs, trigraphs }: { tetragraphs: string[], trigraphs: string[] } = sortTetragraphs(rel);
+  const result = ['USA', ...tetragraphs, ...trigraphs];
+  const last = result.pop();
+  return `REL TO ${result.join(', ')} and ${last}`;
+};
 
 const reduceReleasability = (noforn: boolean, rel: string[], eyes: string[]): string => {
   if (noforn) {
@@ -8,23 +55,11 @@ const reduceReleasability = (noforn: boolean, rel: string[], eyes: string[]): st
   }
 
   if (eyes.length) {
-    const result: string[] = eyes.slice();
-    if (rel.length) {
-      for (let iResult = 0; iResult < result.length; ++iResult) {
-        if (-1 === rel.indexOf(result[iResult])) {
-          result.splice(iResult--, 1);
-        }
-      }
-    }
-    return `USA/${result.join('/')} EYES ONLY`;
+    return reduceEyes(rel, eyes);
   }
 
   if (rel.length) {
-    let result = 'REL TO USA';
-    for (let iRel = 1; iRel < rel.length; ++iRel) {
-      result += `, ${rel[iRel - 1]}`;
-    }
-    return `${result} and ${rel[rel.length - 1]}`;
+    return reduceRel(rel);
   }
 
   return '';
@@ -43,6 +78,33 @@ const reduceDsen = (dsen: boolean): string => (dsen ? 'DEA SENSITIVE' : '');
 const reduceRelido = (relido: boolean): string => (relido ? 'RELIDO' : '');
 const reduceImcon = (imcon: boolean): string => (imcon ? 'IMCON' : '');
 const reduceFisa = (fisa: boolean): string => (fisa ? 'FISA' : '');
+
+const combineRels = (aRel: string[], bRel: string[]): string[] => {
+  // Sort the Dissemination and This REL TOs
+  const tGroups = sortTetragraphs(aRel);
+  const cGroups = sortTetragraphs(bRel);
+
+  // Deduplicate the trigraphs, but check against the tetragraphs
+  const trigraphs = cGroups.trigraphs.filter((trigraph: string): boolean => {
+    if (tGroups.trigraphs.includes(trigraph)) {
+      return true;
+    }
+    for (const tetragraph of [...cGroups.tetragraphs, ...tGroups.tetragraphs]) {
+      const tc = TetragraphCollection.getSingleton();
+      if ((tc.get(tc.findName(tetragraph)) as ITetragraph).hasTrigraph(trigraph)) {
+        return true;
+      }
+    }
+    return false;
+  });
+
+  // Deduplicate the tetragraphs
+  const tetragraphs = cGroups.tetragraphs.filter((tetragraph: string): boolean => {
+    return tGroups.tetragraphs.includes(tetragraph);
+  });
+
+  return [...tetragraphs, ...trigraphs ];
+};
 
 export class Dissemination implements IDissemination {
   private readonly mEyes:   string[] = [];
@@ -109,9 +171,33 @@ export class Dissemination implements IDissemination {
       relido: this.isRelido(),
       rsen: this.isRsen(),
 
-      eyes: this.mEyes.map((eye: string) => eye),
-      rel: this.mRel.map((rel: string) => rel),
+      eyes: this.mEyes.slice(),
+      rel: this.mRel.slice(),
     };
+  }
+
+  public combine(...dissemination: IDissemination[]): void {
+    for (const disseminate of dissemination) {
+      this.setDsen(this.isDsen() || disseminate.isDsen());
+      this.setFouo(this.isFouo() || disseminate.isFouo());
+      this.setNoforn(this.isNoforn() || disseminate.isNoforn());
+      this.setOrcon(this.isOrcon() || disseminate.isOrcon());
+      this.setPropin(this.isPropin() || disseminate.isPropin());
+      this.setRelido(this.isRelido() || disseminate.isRelido());
+      this.setRsen(this.isRsen() || disseminate.isRsen());
+
+      const aRel = this.getRel();
+      const bRel = disseminate.getRel();
+
+      this.mRel.length = 0;
+      this.mRel.push(...combineRels(aRel, bRel));
+
+      const aEyes = this.getEyes();
+      const bEyes = disseminate.getEyes();
+
+      this.mEyes.length = 0;
+      this.mEyes.push(...combineRels(aEyes, bEyes));
+    }
   }
 
   public setRsen(rsen: boolean): Dissemination {
