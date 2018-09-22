@@ -1,5 +1,6 @@
 import test from 'ava';
 import { Classification } from '../src/main';
+import { CodewordCollection } from '../src/codeword-collection';
 
 test('Codewords default to blank', (t) => {
   const classification = new Classification();
@@ -81,4 +82,13 @@ test('Codewords should always default to upper-case', (t) => {
   t.is(classification.hasCodeword('si'), true);
   t.is(classification.hasCodeword('sI'), true);
   t.is(classification.hasCodeword('Si'), true);
+});
+
+test('Codeword Collections maintain a count', (t) => {
+  const codewords = new CodewordCollection([ 'codeword' ]);
+
+  t.is(codewords.count(), 1);
+  t.is(codewords.rem(codewords.find('CoDeWoRd')), true);
+  t.is(codewords.rem(codewords.find('CoDeWoRd')), false);
+  t.is(codewords.count(), 0);
 });

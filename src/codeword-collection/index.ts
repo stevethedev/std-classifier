@@ -42,7 +42,7 @@ export class CodewordCollection implements ICodewordCollection {
   public add(codeword: string): number {
     let index = this.find(codeword);
     if (-1 === index) {
-      index = this.mCodewords.push(new Codeword(codeword));
+      index = this.mCodewords.push(new Codeword(codeword)) - 1;
     }
     return index;
   }

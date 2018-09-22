@@ -36,3 +36,16 @@ test('Non-IC markings may be removed', (t) => {
   classification.remNonIC('COMSEC');
   t.is(classification.toString(), 'TOP SECRET');
 });
+
+test('Non-IC markings may be retrieved as an array of strings', (t) => {
+  const classification = new Classification({ nonic: [ 'comsec' ] });
+
+  t.deepEqual(classification.getNonIC(), [ 'COMSEC' ]);
+});
+
+test('Non-IC markings may be checked for existence, and are non-case-sensitive', (t) => {
+  const classification = new Classification({ nonic: [ 'comsec' ] });
+
+  t.is(classification.hasNonIC('comsec'), true);
+  t.is(classification.hasNonIC('COMSEC'), true);
+});

@@ -43,7 +43,7 @@ export class ClassificationCollection implements IClassificationCollection {
 
   /** Add a new classification object to the collection. */
   public add(classification: IClassification): number {
-    return this.mClassifications.push(classification);
+    return this.mClassifications.push(classification) - 1;
   }
 
   /** Get the classification instance at the given index. */

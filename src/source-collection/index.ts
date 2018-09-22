@@ -27,7 +27,7 @@ export class SourceCollection implements ISourceCollection {
 
   /** Add a new element to the collection. */
   public add(source: ISourceConstruct): number {
-    return this.mSources.push(new Source(source));
+    return this.mSources.push(new Source(source)) - 1;
   }
 
   /** Check whether an element exists. */

@@ -387,12 +387,7 @@ export class Classification implements IClassification {
   }
   public getAuthor(iSource: number, iAuthor: number): string | null {
     const source: ISourceConstruct | null = this.mSources.get(iSource);
-    if (source) {
-      if (source.authors) {
-        return source.authors[iAuthor] || null;
-      }
-    }
-    return null;
+    return (source && source.authors && source.authors[iAuthor]) || null;
   }
 
   /*

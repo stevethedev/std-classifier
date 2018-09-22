@@ -346,3 +346,23 @@ test('Classification Collections does not combine FGI nations', (t) => {
 
   t.is(cc.reduce().toString(), 'TOP SECRET//FGI ACGU CAN');
 });
+
+test('Classifications can check for RELIDO as a boolean value', (t) => {
+  const classification = new Classification({ dissemination: { relido: true } });
+
+  t.is(classification.isRelido(), true);
+
+  classification.setRelido(false);
+
+  t.is(classification.isRelido(), false);
+});
+
+test('Classifications can check for PROPIN as a boolean value', (t) => {
+  const classification = new Classification({ dissemination: { propin: true } });
+
+  t.is(classification.isPropin(), true);
+
+  classification.setPropin(false);
+
+  t.is(classification.isPropin(), false);
+});

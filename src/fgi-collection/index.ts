@@ -102,7 +102,7 @@ export class FgiCollection implements IFgiCollection {
   public add(construct: IFgiConstruct): number {
     let index = this.find(construct);
     if (-1 === index) {
-      index = this.mFgi.push(new Fgi(construct));
+      index = this.mFgi.push(new Fgi(construct)) - 1;
     }
     return index;
   }

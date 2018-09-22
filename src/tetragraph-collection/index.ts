@@ -1,4 +1,5 @@
-import { ITetragraph } from '../tetragraph/interface';
+import { Tetragraph } from '../tetragraph';
+import { ITetragraph, ITetragraphConstruct } from '../tetragraph/interface';
 import { ITetragraphCollection } from './interface';
 
 let SINGLETON: ITetragraphCollection | null = null;
@@ -12,9 +13,13 @@ export class TetragraphCollection implements ITetragraphCollection {
 
   private readonly mTetragraphs: Array<ITetragraph | null> = [];
 
+  public emplace(construct: ITetragraphConstruct): number {
+    return this.add(new Tetragraph(construct));
+  }
+
   public add(tetragraph: ITetragraph): number {
     if (!this.has(tetragraph)) {
-      return this.mTetragraphs.push(tetragraph);
+      return this.mTetragraphs.push(tetragraph) - 1;
     }
     return this.find(tetragraph);
   }
