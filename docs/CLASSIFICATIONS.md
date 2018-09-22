@@ -26,7 +26,7 @@ in place by setting the `level` property in the constructor parameter. If this
 property is not set, then the classification level is presumed to be Level 0.
 
 ```javascript
-import { Classification } from 'std-classifier';
+import { Classification } from 'classification-manager';
 const classification = new Classification({ level: 4 });
 console.log(classification.toString()); // "TOP SECRET"
 ```
@@ -37,7 +37,7 @@ Classification instances can have their classification level set using the
 `setClassificationLevel(int)` method.
 
 ```javascript
-import { Classification } from 'std-classifier';
+import { Classification } from 'classification-manager';
 const classification = new Classification();
 classification.setClassificationLevel(3);
 console.log(classification.toString()); // "SECRET"

@@ -1,5 +1,5 @@
 {
-  "name": "std-classifier",
+  "name": "classification-manager",
   "version": "1.0.0",
   "description": "Department of Defense Classification Library",
   "main": "index.js",

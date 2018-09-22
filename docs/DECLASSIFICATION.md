@@ -13,7 +13,7 @@ Classification instances can be created with the declassification information
 already filled in by filling out the `declassification` property.
 
 ```javascript
-import { Classification } from 'std-classifier';
+import { Classification } from 'classification-manager';
 const classification = new Classification({
   declassification: {
     date: '20180101',     // Set an explicit minimum declassification date.
@@ -29,7 +29,7 @@ Classification instances may have their declassification date set using the
 `setDeclassificationDate(int | string | Date | null)` method.
 
 ```javascript
-import { Classification } from 'std-classifier';
+import { Classification } from 'classification-manager';
 const classification = new Classification();
 classification.setDeclassificationDate('20180101');
 ```
@@ -40,7 +40,7 @@ Classification instances may have their classification date set using the
 `setClassificationDate(int | string | Date)` method.
 
 ```javascript
-import { Classification } from 'std-classifier';
+import { Classification } from 'classification-manager';
 const classification = new Classification();
 classification.setClassificationDate(new Date());
 ```
@@ -51,7 +51,7 @@ Classification instances may have additional exemption codes added by using the
 `addDeclassificationExemption(...string)` method.
 
 ```javascript
-import { Classification } from 'std-classifier';
+import { Classification } from 'classification-manager';
 const classification = new Classification();
 classification.addDeclassificationExemption('25X1', '25X2', '25X3');
 ```
@@ -66,7 +66,7 @@ potentially important declassification rules and provides some typo-checking.
 To register new exemptions, call the static method `Classification.addDeclassificationRule(string, { year (string), deprecated (boolean) })`.
 
 ```javascript
-import { Classification } from 'std-classifier';
+import { Classification } from 'classification-manager';
 
 const classification = new Classification({
   declassification: {
