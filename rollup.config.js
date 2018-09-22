@@ -11,7 +11,7 @@ export default {
   output: {
     name: 'classification',
     file: outFolder('classifier.js'),
-    format: 'umd',
+    format: 'cjs',
     globals: {
       'date-fns': 'dateFns'
     },
