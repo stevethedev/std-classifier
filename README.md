@@ -29,7 +29,7 @@ npm run test
 
 ## Serialized Classification Schema
 
-```json
+```javascript
 {
   "codewords": [ /* codewords as strings */ ],
   /* Declassification information */
