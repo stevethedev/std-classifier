@@ -360,7 +360,9 @@ export class Classification implements IClassification {
   }
 
   public addDeclassificationExemption(...exemptions: string[]): void {
-    exemptions.forEach((exemption: string) => this.mDeclassification.addExemption(exemption));
+    exemptions.forEach((exemption: string): void => {
+      this.mDeclassification.addExemption(exemption);
+    });
   }
 
   /*

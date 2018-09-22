@@ -1,8 +1,8 @@
 import { ISource, ISourceConstruct } from './interface';
 
 export class Source implements ISource {
-  private mName: string | null;
-  private mAuthors: string[] = [];
+  private readonly mName: string | null;
+  private readonly mAuthors: string[] = [];
 
   constructor({ name = null, authors = [] }: ISourceConstruct) {
     this.mName = name;

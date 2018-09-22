@@ -4,21 +4,6 @@ import { TetragraphCollection } from '../tetragraph-collection';
 import { ITetragraph } from '../tetragraph/interface';
 import { IDissemination, IDisseminationConstruct } from './interface';
 
-const reduceEyes = (rel: string[], eyes: string[]): string => {
-  const result: string[] = eyes.slice();
-  if (rel.length) {
-    for (let iResult = 0; iResult < result.length; ++iResult) {
-      if (-1 === rel.indexOf(result[iResult])) {
-        result.splice(iResult--, 1);
-      }
-    }
-  }
-
-  const { tetragraphs, trigraphs }: { tetragraphs: string[], trigraphs: string[] } = sortTetragraphs(result);
-
-  return `USA/${[...tetragraphs, ...trigraphs].join('/')} EYES ONLY`;
-};
-
 const sortTetragraphs = (rel: string[]): { tetragraphs: string[], trigraphs: string[] } => {
   const tc = TetragraphCollection.getSingleton();
   const tetragraphs: string[] = [];
@@ -40,6 +25,21 @@ const sortTetragraphs = (rel: string[]): { tetragraphs: string[], trigraphs: str
   }
 
   return { tetragraphs, trigraphs };
+};
+
+const reduceEyes = (rel: string[], eyes: string[]): string => {
+  const result: string[] = eyes.slice();
+  if (rel.length) {
+    for (let iResult = 0; iResult < result.length; ++iResult) {
+      if (-1 === rel.indexOf(result[iResult])) {
+        result.splice(iResult--, 1);
+      }
+    }
+  }
+
+  const { tetragraphs, trigraphs }: { tetragraphs: string[], trigraphs: string[] } = sortTetragraphs(result);
+
+  return `USA/${[...tetragraphs, ...trigraphs].join('/')} EYES ONLY`;
 };
 
 const reduceRel = (rel: string[]): string => {
