@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "Department of Defense Classification Library",
   "main": "index.js",
+  "types": "./dist/classifier.d.ts",
+  "author": "Steven Jimenez <steven@stevethedev.com>",
+  "license": "MIT",
   "scripts": {
-    "build": "rollup -c ./build/rollup.config.js",
+    "build": "npm run build:javascript && npm run build:dts",
+    "build:javascript": "rollup -c ./rollup.config.js",
+    "build:dts": "dts-bundle-generator -o ./dist/classifier.d.ts ./src/main.ts",
     "lint": "npm run lint:tsc && npm run lint:tslint",
     "lint:tsc": "node node_modules/.bin/tsc --noEmit",
     "lint:tslint": "node node_modules/.bin/tslint -c tslint.json -p .",
@@ -14,8 +19,6 @@
     "coverage:codacy": "nyc report --reporter=text-lcov | codacy-coverage -p .",
     "coverage:html": "nyc report --reporter=html && http-server ./coverage"
   },
-  "author": "Steven Jimenez <steven@stevethedev.com>",
-  "license": "MIT",
   "dependencies": {
     "date-fns": "^1.29.0"
   },
@@ -23,6 +26,7 @@
     "ava": "^0.25.0",
     "codacy-coverage": "^3.0.0",
     "coveralls": "^3.0.2",
+    "dts-bundle-generator": "^1.6.1",
     "http-server": "^0.11.1",
     "nyc": "^13.0.1",
     "rollup": "^0.65.2",
