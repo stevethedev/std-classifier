@@ -36,6 +36,11 @@ test('Classification objects may hold the identity of the OCA', (t) => {
   t.is(classification.getAuthor(0, 0), source.authors[0]);
   t.is(classification.getAuthor(0, 1), source.authors[1]);
 });
+test('Classification objects will return NULL for invalid authors', (t) => {
+  const classification = new Classification();
+
+  t.is(classification.getAuthor(0, 0), null);
+});
 test('Aggregated classifications hold all of the OCA identities', (t) => {
   const sources = [
     { authors: [ 'Author 1' ] },

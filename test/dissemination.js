@@ -1,5 +1,5 @@
 import test from 'ava';
-import { Classification } from '../src/main';
+import { Classification, ClassificationCollection } from '../src/main';
 
 test('Dissemination controls default to blank', (t) => {
   const classification = new Classification();
@@ -257,4 +257,112 @@ test('Dissemination controls can combine many controls at once', (t) => {
     classification.toString(),
     'TOP SECRET//RSEN,ORCON,PROPIN,DEA SENSITIVE,USA/CAN EYES ONLY'
   );
+});
+
+test('Combining classification objects removes conflicting REL TO', (t) => {
+  const cc = new ClassificationCollection([
+    new Classification({ level: 4, dissemination: { rel: [ 'AUS', 'CAN', 'GBR' ] } }),
+    new Classification({ level: 4, dissemination: { rel: [ 'CAN' ] } }),
+  ]);
+
+  t.deepEqual(cc.reduce().getRel(), ['CAN']);
+});
+
+test('Combining classification objects removes conflicting EYES', (t) => {
+  const cc = new ClassificationCollection([
+    new Classification({ level: 4, dissemination: { eyes: [ 'AUS', 'CAN', 'GBR' ] } }),
+    new Classification({ level: 4, dissemination: { eyes: [ 'CAN' ] } }),
+  ]);
+
+  t.deepEqual(cc.reduce().getEyes(), ['CAN']);
+});
+
+test('Tetragraphs can be used to generalize REL nations', (t) => {
+  Classification.addTetragraph('ACGU', [ 'AUS', 'CAN', 'GBR', 'USA' ]);
+
+  const classification = new Classification({
+    level: 4,
+    dissemination: { rel: [ 'ACGU', 'CAN', 'MEX' ] }
+  });
+
+  t.is(classification.toString(), 'TOP SECRET//REL TO USA, ACGU and MEX');
+});
+
+test('Tetragraphs can be used to generalize EYES nations', (t) => {
+  Classification.addTetragraph('ACGU', [ 'AUS', 'CAN', 'GBR', 'USA' ]);
+
+  const classification = new Classification({
+    level: 4,
+    dissemination: { eyes: [ 'ACGU', 'CAN', 'MEX' ] }
+  });
+
+  t.is(classification.toString(), 'TOP SECRET//USA/ACGU/MEX EYES ONLY');
+});
+
+test('Tetragraphs does not generalize FGI nations', (t) => {
+  Classification.addTetragraph('ACGU', [ 'AUS', 'CAN', 'GBR', 'USA' ]);
+
+  const classification = new Classification({
+    level: 4,
+    fgi: [
+      { owner: 'ACGU' },
+      { owner: 'CAN' },
+      { owner: 'MEX' },
+    ]
+  });
+
+  t.is(classification.toString(), 'TOP SECRET//FGI ACGU CAN MEX');
+});
+
+test('Classification Collections extract REL nations from tetragraphs', (t) => {
+  Classification.addTetragraph('ACGU', [ 'AUS', 'CAN', 'GBR', 'USA' ]);
+
+  const cc = new ClassificationCollection();
+
+  cc.add(new Classification({ level: 4, dissemination: { rel: [ 'ACGU' ] } }));
+  cc.add(new Classification({ level: 4, dissemination: { rel: [ 'CAN' ] } }));
+
+  t.is(cc.reduce().toString(), 'TOP SECRET//REL TO USA and CAN');
+});
+
+test('Classification Collections extract EYES nations from tetragraphs', (t) => {
+  Classification.addTetragraph('ACGU', [ 'AUS', 'CAN', 'GBR', 'USA' ]);
+
+  const cc = new ClassificationCollection();
+
+  cc.add(new Classification({ level: 4, dissemination: { eyes: [ 'ACGU' ] } }));
+  cc.add(new Classification({ level: 4, dissemination: { eyes: [ 'CAN' ] } }));
+
+  t.is(cc.reduce().toString(), 'TOP SECRET//USA/CAN EYES ONLY');
+});
+
+test('Classification Collections does not combine FGI nations', (t) => {
+  Classification.addTetragraph('ACGU', [ 'AUS', 'CAN', 'GBR', 'USA' ]);
+
+  const cc = new ClassificationCollection();
+
+  cc.add(new Classification({ level: 4, fgi: [ { owner: 'ACGU' } ] }));
+  cc.add(new Classification({ level: 4, fgi: [ { owner: 'CAN' } ] }));
+
+  t.is(cc.reduce().toString(), 'TOP SECRET//FGI ACGU CAN');
+});
+
+test('Classifications can check for RELIDO as a boolean value', (t) => {
+  const classification = new Classification({ dissemination: { relido: true } });
+
+  t.is(classification.isRelido(), true);
+
+  classification.setRelido(false);
+
+  t.is(classification.isRelido(), false);
+});
+
+test('Classifications can check for PROPIN as a boolean value', (t) => {
+  const classification = new Classification({ dissemination: { propin: true } });
+
+  t.is(classification.isPropin(), true);
+
+  classification.setPropin(false);
+
+  t.is(classification.isPropin(), false);
 });

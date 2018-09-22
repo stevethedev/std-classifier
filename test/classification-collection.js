@@ -21,7 +21,7 @@ test('Classification Collection returns the aggregate  of all codewords', (t) =>
 
   cc.add(new Classification({ level: 4, codewords: ['PINE'] }));
   cc.add(new Classification({ level: 4, codewords: ['NEEDLE'] }));
-  t.is(cc.reduce().toString(), 'TOP SECRET//PINE/NEEDLE');
+  t.is(cc.reduce().toString(), 'TOP SECRET//NEEDLE/PINE');
 });
 
 test('Classification Collection returns the aggregate of all FGIs', (t) => {

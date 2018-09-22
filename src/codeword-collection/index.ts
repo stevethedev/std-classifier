@@ -35,14 +35,14 @@ export class CodewordCollection implements ICodewordCollection {
   }
 
   public toString(): string {
-    return this.mCodewords.join('/');
+    return this.mCodewords.filter(Boolean).sort().join('/');
   }
 
   /** Add a new codeword to the collection. */
   public add(codeword: string): number {
     let index = this.find(codeword);
     if (-1 === index) {
-      index = this.mCodewords.push(new Codeword(codeword));
+      index = this.mCodewords.push(new Codeword(codeword)) - 1;
     }
     return index;
   }

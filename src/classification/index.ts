@@ -14,9 +14,11 @@ import { Dissemination } from '../dissemination';
 import { FgiCollection } from '../fgi-collection';
 import { IFgiConstruct } from '../fgi/interface';
 import { NonICMarkings } from '../non-ic-markings';
+import { ReasonCollection } from '../reason-collection';
 import { SourceCollection } from '../source-collection';
 import { ISourceConstruct } from '../source/interface';
-import { ReasonCollection } from '../reason-collection';
+import { Tetragraph } from '../tetragraph';
+import { TetragraphCollection } from '../tetragraph-collection';
 
 const reduceLevel = (level: ClassificationLevel, fgi: FgiCollection): string => {
   let maxLevel = level.getLevel();
@@ -42,6 +44,15 @@ export class Classification implements IClassification {
   }
   public static addDeclassificationRule(name: string, offset: IDeclassificationOffset): void {
     Declassification.addRule(name, offset);
+  }
+  public static addTetragraph(name: string, trigraphs: string[]): void {
+    const tc = TetragraphCollection.getSingleton();
+    const old = tc.get(tc.findName(name));
+    if (old) {
+      trigraphs.forEach((trigraph: string) => old.addTrigraph(trigraph));
+      return;
+    }
+    tc.add(new Tetragraph({ name, trigraphs }));
   }
 
   private readonly mLevel: ClassificationLevel;
@@ -103,6 +114,30 @@ export class Classification implements IClassification {
 
   public serialize(): string {
     return JSON.stringify(this);
+  }
+
+  public combine(...classifications: Classification[]): void {
+    for (const classification of classifications) {
+      this.setClassificationLevel(Math.max(
+        this.getClassificationLevel(),
+        classification.getClassificationLevel(),
+      ));
+
+      this.mNonIC.combine(classification.mNonIC);
+      this.mDissemination.combine(classification.mDissemination);
+      this.mDeclassification.combine(classification.mDeclassification);
+
+      this.addEyes(...[...this.getEyes(), ...classification.getEyes()]);
+      this.addCodeword(...classification.getCodewords());
+      this.addFgi(...classification.getFgi());
+      this.addSource(...classification.getSources());
+      this.addReason(...classification.getReasons());
+    }
+
+  }
+
+  public clone(): Classification {
+    return new Classification(this.toJSON());
   }
 
   /*
@@ -325,7 +360,9 @@ export class Classification implements IClassification {
   }
 
   public addDeclassificationExemption(...exemptions: string[]): void {
-    exemptions.forEach((exemption: string) => this.mDeclassification.addExemption(exemption));
+    exemptions.forEach((exemption: string): void => {
+      this.mDeclassification.addExemption(exemption);
+    });
   }
 
   /*
@@ -352,12 +389,7 @@ export class Classification implements IClassification {
   }
   public getAuthor(iSource: number, iAuthor: number): string | null {
     const source: ISourceConstruct | null = this.mSources.get(iSource);
-    if (source) {
-      if (source.authors) {
-        return source.authors[iAuthor] || null;
-      }
-    }
-    return null;
+    return (source && source.authors && source.authors[iAuthor]) || null;
   }
 
   /*

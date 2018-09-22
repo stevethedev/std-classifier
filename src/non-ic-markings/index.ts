@@ -9,6 +9,19 @@ export class NonICMarkings implements INonICMarkings {
     }
   }
 
+  /**
+   * Merge multiple NonICMarkings classes into this class.
+   *
+   * @param nonIcMarkings The instances to merge into this  one.
+   */
+  public combine(...nonIcMarkings: INonICMarkings[]): void {
+    for (const nonIcMarking of nonIcMarkings) {
+      for (const marking of nonIcMarking.get()) {
+        this.add(marking);
+      }
+    }
+  }
+
   public toString(): string {
     this.mMarkings.sort();
     return this.mMarkings.join(',');

@@ -10,7 +10,7 @@ export class ReasonCollection implements IReasonCollection {
   }
 
   public toJSON(): string[] {
-    return this.mReasons.slice().filter((x) => x).sort() as string[];
+    return this.mReasons.slice().filter(Boolean).sort() as string[];
   }
 
   public toArray(): string[] {
@@ -21,7 +21,7 @@ export class ReasonCollection implements IReasonCollection {
   public add(reason: string): number {
     let index = this.find(reason);
     if (-1 === index) {
-      index = this.mReasons.push(`${reason}`.toLowerCase());
+      index = this.mReasons.push(`${reason}`.toLowerCase()) - 1;
     }
     return index;
   }

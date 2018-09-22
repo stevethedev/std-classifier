@@ -27,7 +27,7 @@ export class SourceCollection implements ISourceCollection {
 
   /** Add a new element to the collection. */
   public add(source: ISourceConstruct): number {
-    return this.mSources.push(new Source(source));
+    return this.mSources.push(new Source(source)) - 1;
   }
 
   /** Check whether an element exists. */
@@ -77,7 +77,7 @@ export class SourceCollection implements ISourceCollection {
 
   /** Return the number of valid elements in this collection. */
   public count(): number {
-    return this.mSources.filter((x) => x).length;
+    return this.mSources.filter(Boolean).length;
   }
 
   /** Iterate the valid elements in this collection. */

@@ -6,6 +6,7 @@ export interface IDeclassificationConstruct {
 
 export interface IDeclassification {
   toJSON(): IDeclassificationConstruct;
+  combine(...declassification: IDeclassification[]): void;
 
   /**
    * Get the declassification exemption rule name, if applicable.
@@ -34,6 +35,8 @@ export interface IDeclassification {
   getDate(): null | Date;
 
   setDate(date: Date | string | number): void;
+
+  getRawDate(): null | Date;
 
   /**
    * Add a new exemption rule to the structure.

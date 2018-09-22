@@ -33,3 +33,22 @@ test('Declassification rules may be added through an interface', (t) => {
 
   t.is(classification.getDeclassificationDate().getFullYear(), today.getFullYear());
 });
+
+test('Declassification dates can be updated from the Classification object', (t) => {
+  const classification = new Classification();
+
+  classification.setDeclassificationDate('2045-01-30');
+
+  t.is(classification.getDeclassificationDate().getFullYear(), 2045);
+  t.is(classification.getDeclassificationDate().getMonth(), 0);
+  t.is(classification.getDeclassificationDate().getDate(), 30);
+});
+
+test('Declassification exemptions can be pulled as an array of strings', (t) => {
+  const classification = new Classification();
+
+  classification.addDeclassificationExemption('25X1');
+  classification.addDeclassificationExemption('50X2');
+
+  t.deepEqual(classification.getDeclassificationExemptions(), ['25X1', '50X2']);
+});
