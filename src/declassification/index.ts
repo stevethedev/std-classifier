@@ -95,8 +95,10 @@ export class Declassification implements IDeclassification {
 
   public toJSON(): IDeclassificationConstruct {
     return ({
-      created: parse(this.mDate),
-      date: this.mDeclassifyOn,
+      created: parse(this.mDate).toString(),
+      date: this.mDeclassifyOn
+        ? parse(this.mDeclassifyOn).toString()
+        : null,
       exemptions: this.getExemptionList(),
     });
   }
