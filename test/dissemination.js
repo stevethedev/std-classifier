@@ -143,6 +143,13 @@ test('Dissemination controls can fetch DSEN status', (t) => {
   t.is(classification.setDsen(false).isDsen(), false);
 });
 
+test('Dissemination controls IMCON', (t) => {
+  const classification = new Classification({ dissemination: { imcon: true } });
+
+  t.is(classification.isImcon(), true);
+  t.is(classification.setImcon(false).isImcon(), false);
+});
+
 test('Dissemination controls can add releasable nations', (t) => {
   const classification = new Classification();
 

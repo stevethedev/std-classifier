@@ -92,3 +92,15 @@ test('Codeword Collections maintain a count', (t) => {
   t.is(codewords.rem(codewords.find('CoDeWoRd')), false);
   t.is(codewords.count(), 0);
 });
+
+test('Codewords can be easily cleared', (t) => {
+  const classification = new Classification();
+
+  classification.addCodeword('SI', 'TK');
+
+  t.is(classification.hasCodeword('SI'), true);
+
+  classification.clearCodewords();
+
+  t.is(classification.hasCodeword('SI'), false);
+});

@@ -178,6 +178,10 @@ export class Classification implements IClassification {
     return this.mCodewords.rem(this.mCodewords.find(codeword));
   }
 
+  public clearCodewords(): void {
+    this.mCodewords.clear();
+  }
+
   /*
    |---------------------------------------------------------------------------
    | FGI Functions
@@ -284,6 +288,15 @@ export class Classification implements IClassification {
   }
   public isDsen(): boolean {
     return this.mDissemination.isDsen();
+  }
+
+  public setImcon(imcon: boolean): Classification {
+    this.mDissemination.setImcon(imcon);
+    return this;
+  }
+
+  public isImcon(): boolean {
+    return this.mDissemination.isImcon();
   }
 
   public getRel(): string[] {

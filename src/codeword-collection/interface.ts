@@ -12,4 +12,6 @@ export interface ICodewordCollection extends ICollection<string> {
   toJSON(): string[];
 
   toString(): string;
+
+  clear(): void;
 }
