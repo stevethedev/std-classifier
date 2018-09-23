@@ -18,7 +18,10 @@
     "coverage": "npm run coverage:coveralls && npm run coverage:codacy",
     "coverage:coveralls": "nyc report --reporter=text-lcov | coveralls",
     "coverage:codacy": "nyc report --reporter=text-lcov | codacy-coverage -p .",
-    "coverage:html": "nyc report --reporter=html && http-server ./coverage"
+    "coverage:html": "nyc report --reporter=html && http-server ./coverage",
+    "preversion": "npm run test",
+    "version": "npm run build && git add .",
+    "postversion": "git push && git push --tags"
   },
   "dependencies": {
     "date-fns": "^1.29.0"
