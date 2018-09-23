@@ -1,7 +1,7 @@
 {
   "name": "classification-manager",
   "homepage": "https://github.com/stevethedev/std-classifier",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Department of Defense Classification Library",
   "main": "index.js",
   "types": "./dist/classifier.d.ts",
