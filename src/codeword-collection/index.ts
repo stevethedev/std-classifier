@@ -38,6 +38,10 @@ export class CodewordCollection implements ICodewordCollection {
     return this.mCodewords.filter(Boolean).sort().join('/');
   }
 
+  public clear(): void {
+    this.mCodewords.length = 0;
+  }
+
   /** Add a new codeword to the collection. */
   public add(codeword: string): number {
     let index = this.find(codeword);

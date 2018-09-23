@@ -43,6 +43,7 @@ export interface IClassification {
   addCodeword(...codeword: string[]): IClassification;
   hasCodeword(codeword: string): boolean;
   remCodeword(codeword: string): boolean;
+  clearCodewords(): void;
 
   getFgi(): IFgiConstruct[];
   addFgi(...fgi: IFgiConstruct[]): IClassification;
@@ -74,6 +75,9 @@ export interface IClassification {
 
   setDsen(dsen: boolean): IClassification;
   isDsen(): boolean;
+
+  setImcon(imcon: boolean): IClassification;
+  isImcon(): boolean;
 
   getRel(): string[];
   addRel(...nations: string[]): IClassification;
