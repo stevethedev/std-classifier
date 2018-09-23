@@ -1,4 +1,4 @@
-import { parse } from 'date-fns';
+import { format, parse } from 'date-fns';
 import { IDeclassification, IDeclassificationConstruct } from './interface';
 import { DeclassificationRule } from './rule';
 import { IDeclassificationOffset, IDeclassificationRule } from './rule/interface';
@@ -95,9 +95,9 @@ export class Declassification implements IDeclassification {
 
   public toJSON(): IDeclassificationConstruct {
     return ({
-      created: parse(this.mDate).toString(),
+      created: format(parse(this.mDate)),
       date: this.mDeclassifyOn
-        ? parse(this.mDeclassifyOn).toString()
+        ? format(parse(this.mDeclassifyOn))
         : null,
       exemptions: this.getExemptionList(),
     });
