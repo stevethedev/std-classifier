@@ -36,6 +36,20 @@ const reduceLevel = (level: ClassificationLevel, fgi: FgiCollection): string => 
   return (new ClassificationLevel(maxLevel)).toString();
 };
 
+const extractReplaceRel = (left: IClassification, right: IClassification): string[] => {
+  const UNCLASSIFIED = CLASSIFICATION_LEVEL.UNCLASSIFIED;
+  const lClassification = left.getClassificationLevel();
+  const rClassification = right.getClassificationLevel();
+
+  if ((UNCLASSIFIED === lClassification) && (UNCLASSIFIED !== rClassification)) {
+    return right.getRel();
+  }
+  if ((UNCLASSIFIED !== lClassification) && (UNCLASSIFIED === rClassification)) {
+    return left.getRel();
+  }
+  return [];
+};
+
 export class Classification implements IClassification {
   public static levels: (typeof CLASSIFICATION_LEVEL) = CLASSIFICATION_LEVEL;
 
@@ -118,13 +132,22 @@ export class Classification implements IClassification {
 
   public combine(...classifications: Classification[]): void {
     for (const classification of classifications) {
+      // Prevent Unclassified from stripping the REL TO rules from children.
+      // This section has to come before the classification level because
+      // it relies on the pre-merge classification-level content.
+      const replaceRel = extractReplaceRel(this, classification);
+      this.mDissemination.combine(classification.mDissemination);
+      if (replaceRel && replaceRel.length) {
+        this.addRel(...replaceRel);
+      }
+
       this.setClassificationLevel(Math.max(
         this.getClassificationLevel(),
         classification.getClassificationLevel(),
       ));
 
       this.mNonIC.combine(classification.mNonIC);
-      this.mDissemination.combine(classification.mDissemination);
+
       this.mDeclassification.combine(classification.mDeclassification);
 
       this.addEyes(...[...this.getEyes(), ...classification.getEyes()]);
