@@ -1,4 +1,3 @@
-
 /**
  * The Declassification Offset Interface is a standardized container that
  * expresses what kind of timeline should be added to a date object for
@@ -6,10 +5,10 @@
  */
 export interface IDeclassificationOffset {
   // Is this rule deprecated?
-  deprecated ?: boolean;
+  deprecated?: boolean;
 
   // The number of years after classification this should use
-  years ?: number;
+  years?: number;
 }
 
 /**

@@ -4,11 +4,11 @@
  * the same role as a header; separates implementation from definition.
  */
 
-import { CLASSIFICATION_LEVEL } from '../classification-level/enum';
+import { CLASSIFICATION_LEVEL } from "../classification-level/enum";
 
 export interface IFgiConstruct {
   owner: string;
-  level ?: CLASSIFICATION_LEVEL;
+  level?: CLASSIFICATION_LEVEL;
 }
 
 export interface IFgi {

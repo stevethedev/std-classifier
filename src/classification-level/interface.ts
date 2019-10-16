@@ -4,7 +4,7 @@
  * header file, decoupling class implementation from definition.
  */
 
-import { CLASSIFICATION_LEVEL } from './enum';
+import { CLASSIFICATION_LEVEL } from "./enum";
 
 export interface IClassificationLevel {
   toString(): string;

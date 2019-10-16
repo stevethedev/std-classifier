@@ -4,22 +4,22 @@
  * in a C or C++ code-base by splitting definition from implementation.
  */
 
-import { CLASSIFICATION_LEVEL } from '../classification-level/enum';
-import { IDeclassificationConstruct } from '../declassification/interface';
-import { IDisseminationConstruct } from '../dissemination/interface';
-import { IFgiConstruct } from '../fgi/interface';
-import { IReasonConstruct } from '../reason-collection/interface';
-import { ISourceConstruct } from '../source/interface';
+import { CLASSIFICATION_LEVEL } from "../classification-level/enum";
+import { IDeclassificationConstruct } from "../declassification/interface";
+import { IDisseminationConstruct } from "../dissemination/interface";
+import { IFgiConstruct } from "../fgi/interface";
+import { IReasonConstruct } from "../reason-collection/interface";
+import { ISourceConstruct } from "../source/interface";
 
 export interface IClassificationConstructor {
-  level ?: CLASSIFICATION_LEVEL;
-  codewords ?: string[];
-  fgi ?: IFgiConstruct[];
-  nonic ?: string[];
-  dissemination ?: IDisseminationConstruct;
-  declassification ?: IDeclassificationConstruct;
-  reasons ?: IReasonConstruct[];
-  sources ?: ISourceConstruct[];
+  level?: CLASSIFICATION_LEVEL;
+  codewords?: string[];
+  fgi?: IFgiConstruct[];
+  nonic?: string[];
+  dissemination?: IDisseminationConstruct;
+  declassification?: IDeclassificationConstruct;
+  reasons?: IReasonConstruct[];
+  sources?: ISourceConstruct[];
 }
 
 export interface IClassification {

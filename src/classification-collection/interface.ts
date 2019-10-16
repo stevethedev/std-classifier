@@ -4,8 +4,11 @@
  * the collection follows the contract but simplifies definitions.
  */
 
-import { IClassification, IClassificationConstructor } from '../classification/interface';
-import { ICollection } from '../collection/interface';
+import {
+  IClassification,
+  IClassificationConstructor
+} from "../classification/interface";
+import { ICollection } from "../collection/interface";
 
 export interface IClassificationCollectionJson {
   classifications: IClassificationConstructor[];
@@ -13,7 +16,8 @@ export interface IClassificationCollectionJson {
 
 export type IClassificationCollectionConstruct = IClassification[];
 
-export interface IClassificationCollection extends ICollection<IClassification> {
+export interface IClassificationCollection
+  extends ICollection<IClassification> {
   toJSON(): IClassificationCollectionJson;
 
   /** Collapse the collection into a single classification */

@@ -1,4 +1,4 @@
-import { IReasonCollection } from './interface';
+import { IReasonCollection } from "./interface";
 
 export class ReasonCollection implements IReasonCollection {
   private readonly mReasons: Array<string | null> = [];
@@ -10,7 +10,10 @@ export class ReasonCollection implements IReasonCollection {
   }
 
   public toJSON(): string[] {
-    return this.mReasons.slice().filter(Boolean).sort() as string[];
+    return this.mReasons
+      .slice()
+      .filter(Boolean)
+      .sort() as string[];
   }
 
   public toArray(): string[] {
@@ -34,7 +37,7 @@ export class ReasonCollection implements IReasonCollection {
   /** Get the element at the given index. */
   public get(index: number): string | null {
     const result = this.mReasons[index];
-    return 'string' === typeof result ? result : null;
+    return "string" === typeof result ? result : null;
   }
 
   /** Remove the element at the given index. */
@@ -59,13 +62,17 @@ export class ReasonCollection implements IReasonCollection {
 
   /** Return the number of valid elements in this collection. */
   public count(): number {
-    return this.mReasons.filter((reason) => reason).length;
+    return this.mReasons.filter(reason => reason).length;
   }
 
   /** Iterate the valid elements in this collection. */
-  public forEach(callback: (e: string, i: number, t: () => void) => void): void {
+  public forEach(
+    callback: (e: string, i: number, t: () => void) => void
+  ): void {
     let stop = false;
-    const terminate = (): void => { stop = true; };
+    const terminate = (): void => {
+      stop = true;
+    };
 
     for (let iIndex = 0; !stop && iIndex < this.mReasons.length; ++iIndex) {
       const iSource = this.mReasons[iIndex];

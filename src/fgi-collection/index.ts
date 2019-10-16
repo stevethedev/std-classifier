@@ -1,12 +1,12 @@
-import { CLASSIFICATION_LEVEL } from '../classification-level/enum';
-import { IClassification } from '../classification/interface';
-import { Fgi } from '../fgi';
-import { IFgi, IFgiConstruct } from '../fgi/interface';
-import { IFgiCollection } from './interface';
+import { CLASSIFICATION_LEVEL } from "../classification-level/enum";
+import { IClassification } from "../classification/interface";
+import { Fgi } from "../fgi";
+import { IFgi, IFgiConstruct } from "../fgi/interface";
+import { IFgiCollection } from "./interface";
 
 const FGI_SORTER = (
   { owner: aOwner, level: aLevel }: IFgiConstruct,
-  { owner: bOwner, level: bLevel }: IFgiConstruct,
+  { owner: bOwner, level: bLevel }: IFgiConstruct
 ): number => {
   if (aOwner > bOwner) {
     return 1;
@@ -54,13 +54,17 @@ export class FgiCollection implements IFgiCollection {
 
     // No foreign government intelligence; just return a blank string.
     if (0 === owners.length) {
-      return '';
+      return "";
     }
 
     // If there's only one classification owner, and the parent is (otherwise)
     // unclassified, then mark this using the foreign-intelligence (//-prefix).
     // Otherwise, we will skip this and fall into FGI.
-    if (1 === owners.length && classification.getClassificationLevel() === CLASSIFICATION_LEVEL.UNCLASSIFIED) {
+    if (
+      1 === owners.length &&
+      classification.getClassificationLevel() ===
+        CLASSIFICATION_LEVEL.UNCLASSIFIED
+    ) {
       let maxLevel: undefined | number;
       this.forEach(({ owner, level }) => {
         if (level) {
@@ -75,7 +79,7 @@ export class FgiCollection implements IFgiCollection {
     }
 
     // No special rules to apply, just FGI everyone together.
-    return `FGI ${owners.sort().join(' ')}`;
+    return `FGI ${owners.sort().join(" ")}`;
   }
 
   public toJSON(): IFgiConstruct[] {
@@ -112,7 +116,7 @@ export class FgiCollection implements IFgiCollection {
     let found = false;
     this.forEach((fgi: IFgiConstruct, index: number, terminate: () => void) => {
       if (fgi.owner === `${owner}`.toUpperCase()) {
-        if (('undefined' === typeof level) || (fgi.level === level)) {
+        if ("undefined" === typeof level || fgi.level === level) {
           found = true;
           terminate();
         }
@@ -127,7 +131,7 @@ export class FgiCollection implements IFgiCollection {
     if (fgi) {
       return {
         level: fgi.getLevel(),
-        owner: fgi.getOwner(),
+        owner: fgi.getOwner()
       };
     }
     return null;
@@ -147,7 +151,7 @@ export class FgiCollection implements IFgiCollection {
     let index = -1;
     this.forEach((fgi: IFgiConstruct, iFgi: number, terminate: () => void) => {
       if (fgi.owner === owner) {
-        if (('undefined' === typeof level) || (fgi.level === level)) {
+        if ("undefined" === typeof level || fgi.level === level) {
           index = iFgi;
           terminate();
         }
@@ -159,14 +163,20 @@ export class FgiCollection implements IFgiCollection {
   /** Return the number of valid elements in this collection. */
   public count(): number {
     let count = 0;
-    this.forEach(() => { ++count; });
+    this.forEach(() => {
+      ++count;
+    });
     return count;
   }
 
   /** Iterate the valid elements in this collection. */
-  public forEach(callback: (f: IFgiConstruct, i: number, t: () => void) => void): void {
+  public forEach(
+    callback: (f: IFgiConstruct, i: number, t: () => void) => void
+  ): void {
     let terminated = false;
-    const terminate = (): void => { terminated = true; };
+    const terminate = (): void => {
+      terminated = true;
+    };
 
     for (let iFgi = 0; !terminated && iFgi < this.mFgi.length; ++iFgi) {
       const oFgi = this.get(iFgi);

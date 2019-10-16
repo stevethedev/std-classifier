@@ -1,10 +1,12 @@
-import { CLASSIFICATION_LEVEL } from '../classification-level/enum';
-import { IClassification } from '../classification/interface';
-import { TetragraphCollection } from '../tetragraph-collection';
-import { ITetragraph } from '../tetragraph/interface';
-import { IDissemination, IDisseminationConstruct } from './interface';
+import { CLASSIFICATION_LEVEL } from "../classification-level/enum";
+import { IClassification } from "../classification/interface";
+import { TetragraphCollection } from "../tetragraph-collection";
+import { ITetragraph } from "../tetragraph/interface";
+import { IDissemination, IDisseminationConstruct } from "./interface";
 
-const sortTetragraphs = (rel: string[]): { tetragraphs: string[], trigraphs: string[] } => {
+const sortTetragraphs = (
+  rel: string[]
+): { tetragraphs: string[]; trigraphs: string[] } => {
   const tc = TetragraphCollection.getSingleton();
   const tetragraphs: string[] = [];
   const trigraphs: string[] = [];
@@ -37,21 +39,31 @@ const reduceEyes = (rel: string[], eyes: string[]): string => {
     }
   }
 
-  const { tetragraphs, trigraphs }: { tetragraphs: string[], trigraphs: string[] } = sortTetragraphs(result);
+  const {
+    tetragraphs,
+    trigraphs
+  }: { tetragraphs: string[]; trigraphs: string[] } = sortTetragraphs(result);
 
-  return `USA/${[...tetragraphs, ...trigraphs].join('/')} EYES ONLY`;
+  return `USA/${[...tetragraphs, ...trigraphs].join("/")} EYES ONLY`;
 };
 
 const reduceRel = (rel: string[]): string => {
-  const { tetragraphs, trigraphs }: { tetragraphs: string[], trigraphs: string[] } = sortTetragraphs(rel);
-  const result = ['USA', ...tetragraphs, ...trigraphs];
+  const {
+    tetragraphs,
+    trigraphs
+  }: { tetragraphs: string[]; trigraphs: string[] } = sortTetragraphs(rel);
+  const result = ["USA", ...tetragraphs, ...trigraphs];
   const last = result.pop();
-  return `REL TO ${result.join(', ')} and ${last}`;
+  return `REL TO ${result.join(", ")} and ${last}`;
 };
 
-const reduceReleasability = (noforn: boolean, rel: string[], eyes: string[]): string => {
+const reduceReleasability = (
+  noforn: boolean,
+  rel: string[],
+  eyes: string[]
+): string => {
   if (noforn) {
-    return 'NOFORN';
+    return "NOFORN";
   }
 
   if (eyes.length) {
@@ -62,22 +74,22 @@ const reduceReleasability = (noforn: boolean, rel: string[], eyes: string[]): st
     return reduceRel(rel);
   }
 
-  return '';
+  return "";
 };
 
 const reduceFouo = (level: number, fouo: boolean): string => {
   if (level !== CLASSIFICATION_LEVEL.UNCLASSIFIED) {
-    return '';
+    return "";
   }
-  return (fouo ? 'FOR OFFICIAL USE ONLY' : '');
+  return fouo ? "FOR OFFICIAL USE ONLY" : "";
 };
-const reduceRsen = (rsen: boolean): string => (rsen ? 'RSEN' : '');
-const reduceOrcon = (orcon: boolean): string => (orcon ? 'ORCON' : '');
-const reducePropin = (propin: boolean): string => (propin ? 'PROPIN' : '');
-const reduceDsen = (dsen: boolean): string => (dsen ? 'DEA SENSITIVE' : '');
-const reduceRelido = (relido: boolean): string => (relido ? 'RELIDO' : '');
-const reduceImcon = (imcon: boolean): string => (imcon ? 'IMCON' : '');
-const reduceFisa = (fisa: boolean): string => (fisa ? 'FISA' : '');
+const reduceRsen = (rsen: boolean): string => (rsen ? "RSEN" : "");
+const reduceOrcon = (orcon: boolean): string => (orcon ? "ORCON" : "");
+const reducePropin = (propin: boolean): string => (propin ? "PROPIN" : "");
+const reduceDsen = (dsen: boolean): string => (dsen ? "DEA SENSITIVE" : "");
+const reduceRelido = (relido: boolean): string => (relido ? "RELIDO" : "");
+const reduceImcon = (imcon: boolean): string => (imcon ? "IMCON" : "");
+const reduceFisa = (fisa: boolean): string => (fisa ? "FISA" : "");
 
 const combineRels = (aRel: string[], bRel: string[]): string[] => {
   // Sort the Dissemination and This REL TOs
@@ -91,7 +103,9 @@ const combineRels = (aRel: string[], bRel: string[]): string[] => {
     }
     for (const tetragraph of [...cGroups.tetragraphs, ...tGroups.tetragraphs]) {
       const tc = TetragraphCollection.getSingleton();
-      if ((tc.get(tc.findName(tetragraph)) as ITetragraph).hasTrigraph(trigraph)) {
+      if (
+        (tc.get(tc.findName(tetragraph)) as ITetragraph).hasTrigraph(trigraph)
+      ) {
         return true;
       }
     }
@@ -99,26 +113,28 @@ const combineRels = (aRel: string[], bRel: string[]): string[] => {
   });
 
   // Deduplicate the tetragraphs
-  const tetragraphs = cGroups.tetragraphs.filter((tetragraph: string): boolean => {
-    return tGroups.tetragraphs.includes(tetragraph);
-  });
+  const tetragraphs = cGroups.tetragraphs.filter(
+    (tetragraph: string): boolean => {
+      return tGroups.tetragraphs.includes(tetragraph);
+    }
+  );
 
-  return [...tetragraphs, ...trigraphs ];
+  return [...tetragraphs, ...trigraphs];
 };
 
 export class Dissemination implements IDissemination {
-  private readonly mEyes:   string[] = [];
-  private readonly mRel:    string[] = [];
+  private readonly mEyes: string[] = [];
+  private readonly mRel: string[] = [];
 
-  private mDsen:   boolean = false;
-  private mFouo:   boolean = false;
+  private mDsen: boolean = false;
+  private mFouo: boolean = false;
   private mNoforn: boolean = false;
-  private mOrcon:  boolean = false;
+  private mOrcon: boolean = false;
   private mPropin: boolean = false;
-  private mRsen:   boolean = false;
+  private mRsen: boolean = false;
   private mRelido: boolean = false;
-  private mImcon:  boolean = false;
-  private mFisa:   boolean = false;
+  private mImcon: boolean = false;
+  private mFisa: boolean = false;
 
   constructor({
     dsen = false,
@@ -130,7 +146,7 @@ export class Dissemination implements IDissemination {
     relido = false,
     rsen = false,
     rel = [],
-    eyes = [],
+    eyes = []
   }: IDisseminationConstruct = {}) {
     this.setDsen(dsen);
     this.setFouo(fouo);
@@ -155,9 +171,9 @@ export class Dissemination implements IDissemination {
       reduceRelido(this.mRelido),
       reduceImcon(this.mImcon),
       reduceFisa(this.mFisa),
-      reduceReleasability(this.mNoforn, this.mRel.sort(), this.mEyes.sort()),
+      reduceReleasability(this.mNoforn, this.mRel.sort(), this.mEyes.sort())
     ];
-    return result.filter(Boolean).join(',');
+    return result.filter(Boolean).join(",");
   }
 
   public toJSON(): IDisseminationConstruct {
@@ -172,7 +188,7 @@ export class Dissemination implements IDissemination {
       rsen: this.isRsen(),
 
       eyes: this.mEyes.slice(),
-      rel: this.mRel.slice(),
+      rel: this.mRel.slice()
     };
   }
 
@@ -244,7 +260,7 @@ export class Dissemination implements IDissemination {
     this.mOrcon = orcon;
     return this;
   }
-  public isOrcon(): boolean  {
+  public isOrcon(): boolean {
     return this.mOrcon;
   }
 

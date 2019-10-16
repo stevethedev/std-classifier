@@ -4,9 +4,9 @@
  * class definition while ensuring it follows the contract.
  */
 
-import { IClassification } from '../classification/interface';
-import { ICollection } from '../collection/interface';
-import { IFgiConstruct } from '../fgi/interface';
+import { IClassification } from "../classification/interface";
+import { ICollection } from "../collection/interface";
+import { IFgiConstruct } from "../fgi/interface";
 
 export interface IFgiCollection extends ICollection<IFgiConstruct> {
   toArray(): IFgiConstruct[];

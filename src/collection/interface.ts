@@ -26,5 +26,11 @@ export interface ICollection<T> {
   count(): ICollectionIndex;
 
   /** Iterate the valid elements in this collection. */
-  forEach(callback: (element: T, index: ICollectionIndex, terminator: () => void) => void): void;
+  forEach(
+    callback: (
+      element: T,
+      index: ICollectionIndex,
+      terminator: () => void
+    ) => void
+  ): void;
 }

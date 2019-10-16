@@ -1,4 +1,4 @@
-import { ISource, ISourceConstruct } from './interface';
+import { ISource, ISourceConstruct } from "./interface";
 
 export class Source implements ISource {
   private readonly mName: string | null;
@@ -12,7 +12,7 @@ export class Source implements ISource {
   public toJSON(): ISourceConstruct {
     return {
       authors: this.getAuthors().sort(),
-      name: this.mName,
+      name: this.mName
     };
   }
 

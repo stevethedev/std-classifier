@@ -1,9 +1,13 @@
-import { format, parse } from 'date-fns';
-import { IDeclassification, IDeclassificationConstruct } from './interface';
-import { DeclassificationRule } from './rule';
-import { IDeclassificationOffset, IDeclassificationRule } from './rule/interface';
+import { format, parseISO } from "date-fns";
+import { IDeclassification, IDeclassificationConstruct } from "./interface";
+import { DeclassificationRule } from "./rule";
+import {
+  IDeclassificationOffset,
+  IDeclassificationRule
+} from "./rule/interface";
 
 const RULE_REGISTRY: IDeclassificationRule[] = [];
+const DATE_FORMAT: string = "yyyy-MM-dd'T'HH:mm:ss.SSSxxx";
 
 function findRule(name: string): number {
   for (let iRule = 0; iRule < RULE_REGISTRY.length; ++iRule) {
@@ -23,16 +27,21 @@ function exemptionToRuleId(exemption: string): number {
 }
 
 function rulesToIds(exemptions: string[]): number[] {
-  return exemptions
-    .map(exemptionToRuleId)
-    // Sort the rule indexes into the order they appear in the registry
-    .sort((aIndex: number, bIndex: number) => {
-      switch (true) {
-        case (aIndex > bIndex): return 1;
-        case (aIndex < bIndex): return -1;
-        default: return 0;
-      }
-    });
+  return (
+    exemptions
+      .map(exemptionToRuleId)
+      // Sort the rule indexes into the order they appear in the registry
+      .sort((aIndex: number, bIndex: number) => {
+        switch (true) {
+          case aIndex > bIndex:
+            return 1;
+          case aIndex < bIndex:
+            return -1;
+          default:
+            return 0;
+        }
+      })
+  );
 }
 
 function idsToRules(ruleIds: number[]): string[] {
@@ -46,7 +55,13 @@ function findMaxRuleIndex(exemptions: string[]): number {
       return ruleId;
     }
 
-    if (1 === DeclassificationRule.compare(RULE_REGISTRY[ruleId], RULE_REGISTRY[current])) {
+    if (
+      1 ===
+      DeclassificationRule.compare(
+        RULE_REGISTRY[ruleId],
+        RULE_REGISTRY[current]
+      )
+    ) {
       return ruleId;
     }
     return current;
@@ -84,7 +99,7 @@ export class Declassification implements IDeclassification {
   constructor({
     created = new Date(),
     date = null,
-    exemptions = [],
+    exemptions = []
   }: IDeclassificationConstruct = {}) {
     this.setClassificationDate(created);
     this.setDate(date);
@@ -94,21 +109,21 @@ export class Declassification implements IDeclassification {
   }
 
   public toJSON(): IDeclassificationConstruct {
-    return ({
-      created: format(parse(this.mDate)),
-      date: this.mDeclassifyOn
-        ? format(parse(this.mDeclassifyOn))
-        : null,
-      exemptions: this.getExemptionList(),
-    });
+    return {
+      created: format(this.mDate, DATE_FORMAT),
+      date: this.mDeclassifyOn ? format(this.mDeclassifyOn, DATE_FORMAT) : null,
+      exemptions: this.getExemptionList()
+    };
   }
 
   public combine(...declassification: IDeclassification[]): void {
     for (const declass of declassification) {
-      this.setClassificationDate(Math.max(
-        this.getClassificationDate().getTime(),
-        declass.getClassificationDate().getTime(),
-      ));
+      this.setClassificationDate(
+        Math.max(
+          this.getClassificationDate().getTime(),
+          declass.getClassificationDate().getTime()
+        )
+      );
 
       for (const exemption of declass.getExemptionList()) {
         this.addExemption(exemption);
@@ -117,7 +132,10 @@ export class Declassification implements IDeclassification {
       const classificationDate = declass.getRawDate();
       if (classificationDate) {
         const resultDate = this.getRawDate();
-        if (!resultDate || resultDate.getTime() < classificationDate.getTime()) {
+        if (
+          !resultDate ||
+          resultDate.getTime() < classificationDate.getTime()
+        ) {
           this.setDate(classificationDate);
         }
       }
@@ -150,18 +168,33 @@ export class Declassification implements IDeclassification {
   }
 
   public setClassificationDate(date: Date | string | number): void {
-    this.mDate = parse(date);
+    if (date instanceof Date) {
+      this.mDate = date;
+    } else if ("string" === typeof date) {
+      this.mDate = parseISO(date);
+    } else {
+      this.mDate = new Date(date);
+    }
   }
 
   public setDate(date: Date | string | number | null): void {
-    this.mDeclassifyOn = date ? parse(date) || null : null;
+    if (date instanceof Date) {
+      this.mDeclassifyOn = date;
+    } else if ("string" === typeof date) {
+      this.mDeclassifyOn = parseISO(date);
+    } else if ("number" === typeof date) {
+      this.mDeclassifyOn = new Date(date);
+    } else {
+      this.mDeclassifyOn = null;
+    }
   }
 
   public getDate(): null | Date {
     const ruleId = findMaxRuleIndex(this.mExemptions);
-    const rule = (-1 === ruleId)
-      ? new DeclassificationRule('', Declassification.defaultOffset)
-      : RULE_REGISTRY[ruleId];
+    const rule =
+      -1 === ruleId
+        ? new DeclassificationRule("", Declassification.defaultOffset)
+        : RULE_REGISTRY[ruleId];
 
     const ruleDate = rule.apply(this.mDate);
 
@@ -176,7 +209,7 @@ export class Declassification implements IDeclassification {
 
   public getRawDate(): null | Date {
     if (this.mDeclassifyOn) {
-      return parse(this.mDeclassifyOn);
+      return new Date(this.mDeclassifyOn.getTime());
     }
     return null;
   }
@@ -186,43 +219,43 @@ export class Declassification implements IDeclassification {
   }
 }
 
-Declassification.addRule('25X1', { years: 50 });
-Declassification.addRule('25X2', { years: 50 });
-Declassification.addRule('25X3', { years: 50 });
-Declassification.addRule('25X4', { years: 50 });
-Declassification.addRule('25X5', { years: 50 });
-Declassification.addRule('25X6', { years: 50 });
-Declassification.addRule('25X7', { years: 50 });
-Declassification.addRule('25X8', { years: 50 });
-Declassification.addRule('25X9', { years: 50 });
+Declassification.addRule("25X1", { years: 50 });
+Declassification.addRule("25X2", { years: 50 });
+Declassification.addRule("25X3", { years: 50 });
+Declassification.addRule("25X4", { years: 50 });
+Declassification.addRule("25X5", { years: 50 });
+Declassification.addRule("25X6", { years: 50 });
+Declassification.addRule("25X7", { years: 50 });
+Declassification.addRule("25X8", { years: 50 });
+Declassification.addRule("25X9", { years: 50 });
 
-Declassification.addRule('50X1-HUM', { years: 75 });
-Declassification.addRule('50X2-WMD', { years: 75 });
-Declassification.addRule('50X1', { years: 75 });
-Declassification.addRule('50X2', { years: 75 });
-Declassification.addRule('50X3', { years: 75 });
-Declassification.addRule('50X4', { years: 75 });
-Declassification.addRule('50X5', { years: 75 });
-Declassification.addRule('50X6', { years: 75 });
-Declassification.addRule('50X7', { years: 75 });
-Declassification.addRule('50X8', { years: 75 });
-Declassification.addRule('50X9', { years: 75 });
+Declassification.addRule("50X1-HUM", { years: 75 });
+Declassification.addRule("50X2-WMD", { years: 75 });
+Declassification.addRule("50X1", { years: 75 });
+Declassification.addRule("50X2", { years: 75 });
+Declassification.addRule("50X3", { years: 75 });
+Declassification.addRule("50X4", { years: 75 });
+Declassification.addRule("50X5", { years: 75 });
+Declassification.addRule("50X6", { years: 75 });
+Declassification.addRule("50X7", { years: 75 });
+Declassification.addRule("50X8", { years: 75 });
+Declassification.addRule("50X9", { years: 75 });
 
-Declassification.addRule('75X1', { years: 100 });
-Declassification.addRule('75X2', { years: 100 });
-Declassification.addRule('75X3', { years: 100 });
-Declassification.addRule('75X4', { years: 100 });
-Declassification.addRule('75X5', { years: 100 });
-Declassification.addRule('75X6', { years: 100 });
-Declassification.addRule('75X7', { years: 100 });
-Declassification.addRule('75X8', { years: 100 });
-Declassification.addRule('75X9', { years: 100 });
+Declassification.addRule("75X1", { years: 100 });
+Declassification.addRule("75X2", { years: 100 });
+Declassification.addRule("75X3", { years: 100 });
+Declassification.addRule("75X4", { years: 100 });
+Declassification.addRule("75X5", { years: 100 });
+Declassification.addRule("75X6", { years: 100 });
+Declassification.addRule("75X7", { years: 100 });
+Declassification.addRule("75X8", { years: 100 });
+Declassification.addRule("75X9", { years: 100 });
 
-Declassification.addRule('X1', { deprecated: true, years: 25 });
-Declassification.addRule('X2', { deprecated: true, years: 25 });
-Declassification.addRule('X3', { deprecated: true, years: 25 });
-Declassification.addRule('X4', { deprecated: true, years: 25 });
-Declassification.addRule('X5', { deprecated: true, years: 25 });
-Declassification.addRule('X6', { deprecated: true, years: 25 });
-Declassification.addRule('X7', { deprecated: true, years: 25 });
-Declassification.addRule('X8', { deprecated: true, years: 25 });
+Declassification.addRule("X1", { deprecated: true, years: 25 });
+Declassification.addRule("X2", { deprecated: true, years: 25 });
+Declassification.addRule("X3", { deprecated: true, years: 25 });
+Declassification.addRule("X4", { deprecated: true, years: 25 });
+Declassification.addRule("X5", { deprecated: true, years: 25 });
+Declassification.addRule("X6", { deprecated: true, years: 25 });
+Declassification.addRule("X7", { deprecated: true, years: 25 });
+Declassification.addRule("X8", { deprecated: true, years: 25 });

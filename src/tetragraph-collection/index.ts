@@ -1,6 +1,6 @@
-import { Tetragraph } from '../tetragraph';
-import { ITetragraph, ITetragraphConstruct } from '../tetragraph/interface';
-import { ITetragraphCollection } from './interface';
+import { Tetragraph } from "../tetragraph";
+import { ITetragraph, ITetragraphConstruct } from "../tetragraph/interface";
+import { ITetragraphCollection } from "./interface";
 
 let SINGLETON: ITetragraphCollection | null = null;
 export class TetragraphCollection implements ITetragraphCollection {
@@ -75,11 +75,19 @@ export class TetragraphCollection implements ITetragraphCollection {
     return this.mTetragraphs.filter(Boolean).length;
   }
 
-  public forEach(callback: (e: ITetragraph, i: number, t: () => void) => void): void {
+  public forEach(
+    callback: (e: ITetragraph, i: number, t: () => void) => void
+  ): void {
     let stop = false;
-    const terminate = (): void => { stop = true; };
+    const terminate = (): void => {
+      stop = true;
+    };
 
-    for (let iTetragraph = 0; !stop && iTetragraph < this.mTetragraphs.length; ++iTetragraph) {
+    for (
+      let iTetragraph = 0;
+      !stop && iTetragraph < this.mTetragraphs.length;
+      ++iTetragraph
+    ) {
       const tetragraph = this.mTetragraphs[iTetragraph];
 
       if (tetragraph) {

@@ -1,17 +1,17 @@
-import { IClassification } from '../classification/interface';
+import { IClassification } from "../classification/interface";
 
 export interface IDisseminationConstruct {
-  dsen ?: boolean;
-  fouo ?: boolean;
-  imcon ?: boolean;
-  noforn ?: boolean;
-  orcon ?: boolean;
-  propin ?: boolean;
-  relido ?: boolean;
-  rsen ?: boolean;
+  dsen?: boolean;
+  fouo?: boolean;
+  imcon?: boolean;
+  noforn?: boolean;
+  orcon?: boolean;
+  propin?: boolean;
+  relido?: boolean;
+  rsen?: boolean;
 
-  rel ?: string[];
-  eyes ?: string[];
+  rel?: string[];
+  eyes?: string[];
 }
 
 export interface IDissemination {

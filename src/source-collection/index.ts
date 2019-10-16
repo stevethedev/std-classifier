@@ -1,6 +1,6 @@
-import { Source } from '../source';
-import { ISource, ISourceConstruct } from '../source/interface';
-import { ISourceCollection } from './interface';
+import { Source } from "../source";
+import { ISource, ISourceConstruct } from "../source/interface";
+import { ISourceCollection } from "./interface";
 
 export class SourceCollection implements ISourceCollection {
   private readonly mSources: Array<ISource | null> = [];
@@ -55,10 +55,13 @@ export class SourceCollection implements ISourceCollection {
     const matches = this.mSources
       .map((source, index) => index)
       .filter((index: number): boolean => Boolean(this.mSources[index]))
-      .filter((index: number): boolean => ('undefined' === typeof fName
-        || fName === (this.mSources[index] as ISource).getName()))
+      .filter(
+        (index: number): boolean =>
+          "undefined" === typeof fName ||
+          fName === (this.mSources[index] as ISource).getName()
+      )
       .filter((index: number): boolean => {
-        if ('undefined' !== typeof fAuthors) {
+        if ("undefined" !== typeof fAuthors) {
           const sAuthors = (this.mSources[index] as ISource).getAuthors();
           if (fAuthors.length === 0) {
             return sAuthors.length === 0;
@@ -81,9 +84,13 @@ export class SourceCollection implements ISourceCollection {
   }
 
   /** Iterate the valid elements in this collection. */
-  public forEach(callback: (e: ISourceConstruct, i: number, t: () => void) => void): void {
+  public forEach(
+    callback: (e: ISourceConstruct, i: number, t: () => void) => void
+  ): void {
     let stop = false;
-    const terminate = (): void => { stop = true; };
+    const terminate = (): void => {
+      stop = true;
+    };
 
     for (let iIndex = 0; !stop && iIndex < this.mSources.length; ++iIndex) {
       const iSource = this.mSources[iIndex];

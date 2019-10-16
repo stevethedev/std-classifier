@@ -1,8 +1,11 @@
-import { addYears } from 'date-fns';
-import { IDeclassificationOffset, IDeclassificationRule } from './interface';
+import { addYears } from "date-fns";
+import { IDeclassificationOffset, IDeclassificationRule } from "./interface";
 
 export class DeclassificationRule implements IDeclassificationRule {
-  public static compare(aRule: IDeclassificationRule, bRule: IDeclassificationRule): number {
+  public static compare(
+    aRule: IDeclassificationRule,
+    bRule: IDeclassificationRule
+  ): number {
     const LEFT = 1;
     const RIGHT = -1;
     const EQUAL = 0;
@@ -22,14 +25,17 @@ export class DeclassificationRule implements IDeclassificationRule {
     return EQUAL;
   }
 
-  public id: string = '';
+  public id: string = "";
   public offset: IDeclassificationOffset = {};
 
   public get deprecated(): boolean {
     return Boolean(this.offset.deprecated);
   }
 
-  constructor(id: string, { deprecated = false, years = 0 }: IDeclassificationOffset = {}) {
+  constructor(
+    id: string,
+    { deprecated = false, years = 0 }: IDeclassificationOffset = {}
+  ) {
     this.id = id;
     this.offset = { deprecated, years };
   }

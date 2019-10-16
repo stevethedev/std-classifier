@@ -1,4 +1,4 @@
-import { INonICMarkings } from './interface';
+import { INonICMarkings } from "./interface";
 
 export class NonICMarkings implements INonICMarkings {
   private readonly mMarkings: string[] = [];
@@ -24,7 +24,7 @@ export class NonICMarkings implements INonICMarkings {
 
   public toString(): string {
     this.mMarkings.sort();
-    return this.mMarkings.join(',');
+    return this.mMarkings.join(",");
   }
 
   public toJSON(): string[] {
@@ -43,7 +43,7 @@ export class NonICMarkings implements INonICMarkings {
   }
 
   public has(nonIc: string): boolean {
-    for  (const marking of this.mMarkings) {
+    for (const marking of this.mMarkings) {
       if (marking.toUpperCase() === nonIc.toUpperCase()) {
         return true;
       }

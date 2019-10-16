@@ -1,4 +1,4 @@
-import { ICollection } from '../collection/interface';
+import { ICollection } from "../collection/interface";
 
 export type IReasonConstruct = string;
 

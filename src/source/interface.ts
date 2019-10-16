@@ -1,6 +1,6 @@
 export interface ISourceConstruct {
-  name ?: null | string;
-  authors ?: string[];
+  name?: null | string;
+  authors?: string[];
 }
 
 export interface ISource {

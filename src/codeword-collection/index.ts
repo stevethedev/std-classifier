@@ -4,9 +4,9 @@
  * centralize managing codewords for easier maintenance in the long-term.
  */
 
-import { Codeword } from '../codeword';
-import { ICodeword } from '../codeword/interface';
-import { ICodewordCollection } from './interface';
+import { Codeword } from "../codeword";
+import { ICodeword } from "../codeword/interface";
+import { ICodewordCollection } from "./interface";
 
 export class CodewordCollection implements ICodewordCollection {
   private readonly mCodewords: Array<ICodeword | null>;
@@ -18,7 +18,9 @@ export class CodewordCollection implements ICodewordCollection {
 
   public toArray(): string[] {
     const array: string[] = [];
-    this.forEach((codeword: string) => { array.push(codeword); });
+    this.forEach((codeword: string) => {
+      array.push(codeword);
+    });
     return array;
   }
 
@@ -35,7 +37,10 @@ export class CodewordCollection implements ICodewordCollection {
   }
 
   public toString(): string {
-    return this.mCodewords.filter(Boolean).sort().join('/');
+    return this.mCodewords
+      .filter(Boolean)
+      .sort()
+      .join("/");
   }
 
   public clear(): void {
@@ -89,15 +94,25 @@ export class CodewordCollection implements ICodewordCollection {
   /** Return the number of valid elements in this collection. */
   public count(): number {
     let count = 0;
-    this.forEach(() => { ++count; });
+    this.forEach(() => {
+      ++count;
+    });
     return count;
   }
 
   /** Iterate the valid elements in this collection. */
-  public forEach(callback: (c: string, i: number, t: () => void) => void): void {
+  public forEach(
+    callback: (c: string, i: number, t: () => void) => void
+  ): void {
     let terminate = false;
-    const terminator = (): void => { terminate = true; };
-    for (let iIndex = 0; !terminate && iIndex < this.mCodewords.length; ++iIndex) {
+    const terminator = (): void => {
+      terminate = true;
+    };
+    for (
+      let iIndex = 0;
+      !terminate && iIndex < this.mCodewords.length;
+      ++iIndex
+    ) {
       const codeword = this.mCodewords[iIndex];
       if (codeword) {
         callback(codeword.toString(), iIndex, terminator);

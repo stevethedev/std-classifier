@@ -1,7 +1,7 @@
-import { ITetragraph, ITetragraphConstruct } from './interface';
+import { ITetragraph, ITetragraphConstruct } from "./interface";
 
 export class Tetragraph implements ITetragraph {
-  private mName: string = '';
+  private mName: string = "";
   private readonly mTrigraphs: string[] = [];
 
   constructor({ name, trigraphs = [] }: ITetragraphConstruct) {

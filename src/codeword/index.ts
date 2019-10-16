@@ -1,7 +1,7 @@
-import { ICodeword } from './interface';
+import { ICodeword } from "./interface";
 
 export class Codeword implements ICodeword {
-  private mCodeword: string = '';
+  private mCodeword: string = "";
 
   constructor(codeword: string) {
     this.setCodeword(codeword);

@@ -4,7 +4,7 @@
  * follows the contract, but simplifies the main class definitions.
  */
 
-import { ICollection } from '../collection/interface';
+import { ICollection } from "../collection/interface";
 
 export interface ICodewordCollection extends ICollection<string> {
   toArray(): string[];

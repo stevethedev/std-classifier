@@ -4,59 +4,74 @@
  * through. It implements the co-located ClassificationInterface contract.
  */
 
-import { IClassification, IClassificationConstructor } from './interface';
+import { IClassification, IClassificationConstructor } from "./interface";
 
-import { CLASSIFICATION_LEVEL, ClassificationLevel } from '../classification-level';
-import { CodewordCollection } from '../codeword-collection';
-import { Declassification } from '../declassification';
-import { IDeclassificationOffset } from '../declassification/rule/interface';
-import { Dissemination } from '../dissemination';
-import { FgiCollection } from '../fgi-collection';
-import { IFgiConstruct } from '../fgi/interface';
-import { NonICMarkings } from '../non-ic-markings';
-import { ReasonCollection } from '../reason-collection';
-import { SourceCollection } from '../source-collection';
-import { ISourceConstruct } from '../source/interface';
-import { Tetragraph } from '../tetragraph';
-import { TetragraphCollection } from '../tetragraph-collection';
+import {
+  CLASSIFICATION_LEVEL,
+  ClassificationLevel
+} from "../classification-level";
+import { CodewordCollection } from "../codeword-collection";
+import { Declassification } from "../declassification";
+import { IDeclassificationOffset } from "../declassification/rule/interface";
+import { Dissemination } from "../dissemination";
+import { FgiCollection } from "../fgi-collection";
+import { IFgiConstruct } from "../fgi/interface";
+import { NonICMarkings } from "../non-ic-markings";
+import { ReasonCollection } from "../reason-collection";
+import { SourceCollection } from "../source-collection";
+import { ISourceConstruct } from "../source/interface";
+import { Tetragraph } from "../tetragraph";
+import { TetragraphCollection } from "../tetragraph-collection";
 
-const reduceLevel = (level: ClassificationLevel, fgi: FgiCollection): string => {
+const reduceLevel = (
+  level: ClassificationLevel,
+  fgi: FgiCollection
+): string => {
   let maxLevel = level.getLevel();
 
-  if (1 === fgi.getOwners().length && (maxLevel === CLASSIFICATION_LEVEL.UNCLASSIFIED)) {
-    return '';
+  if (
+    1 === fgi.getOwners().length &&
+    maxLevel === CLASSIFICATION_LEVEL.UNCLASSIFIED
+  ) {
+    return "";
   }
 
   fgi.forEach(({ level: fgiLevel }: IFgiConstruct) => {
-    if (fgiLevel && (maxLevel < fgiLevel)) {
+    if (fgiLevel && maxLevel < fgiLevel) {
       maxLevel = fgiLevel;
     }
   });
 
-  return (new ClassificationLevel(maxLevel)).toString();
+  return new ClassificationLevel(maxLevel).toString();
 };
 
-const extractReplaceRel = (left: IClassification, right: IClassification): string[] => {
+const extractReplaceRel = (
+  left: IClassification,
+  right: IClassification
+): string[] => {
   const UNCLASSIFIED = CLASSIFICATION_LEVEL.UNCLASSIFIED;
   const lClassification = left.getClassificationLevel();
   const rClassification = right.getClassificationLevel();
 
-  if ((UNCLASSIFIED === lClassification) && (UNCLASSIFIED !== rClassification)) {
+  if (UNCLASSIFIED === lClassification && UNCLASSIFIED !== rClassification) {
     return right.getRel();
   }
-  if ((UNCLASSIFIED !== lClassification) && (UNCLASSIFIED === rClassification)) {
+  if (UNCLASSIFIED !== lClassification && UNCLASSIFIED === rClassification) {
     return left.getRel();
   }
   return [];
 };
 
 export class Classification implements IClassification {
-  public static levels: (typeof CLASSIFICATION_LEVEL) = CLASSIFICATION_LEVEL;
+  public static levels: typeof CLASSIFICATION_LEVEL = CLASSIFICATION_LEVEL;
 
   public static deserialize(json: string): Classification {
     return new Classification(JSON.parse(json));
   }
-  public static addDeclassificationRule(name: string, offset: IDeclassificationOffset): void {
+  public static addDeclassificationRule(
+    name: string,
+    offset: IDeclassificationOffset
+  ): void {
     Declassification.addRule(name, offset);
   }
   public static addTetragraph(name: string, trigraphs: string[]): void {
@@ -86,7 +101,7 @@ export class Classification implements IClassification {
     dissemination,
     declassification,
     sources,
-    reasons,
+    reasons
   }: IClassificationConstructor = {}) {
     this.mLevel = new ClassificationLevel(level);
     this.mCodewords = new CodewordCollection(codewords);
@@ -104,11 +119,11 @@ export class Classification implements IClassification {
       this.mCodewords.toString(),
       this.mFgi.toString(this),
       this.mDissemination.toString(this),
-      this.mNonIC.toString(),
+      this.mNonIC.toString()
     ].filter((x: string) => x);
 
     if (result.length) {
-      return [level, ...result].join('//');
+      return [level, ...result].join("//");
     }
     return level;
   }
@@ -122,7 +137,7 @@ export class Classification implements IClassification {
       level: this.mLevel.toJSON(),
       nonic: this.mNonIC.toJSON(),
       reasons: this.mReasons.toJSON(),
-      sources: this.mSources.toJSON(),
+      sources: this.mSources.toJSON()
     };
   }
 
@@ -141,10 +156,12 @@ export class Classification implements IClassification {
         this.addRel(...replaceRel);
       }
 
-      this.setClassificationLevel(Math.max(
-        this.getClassificationLevel(),
-        classification.getClassificationLevel(),
-      ));
+      this.setClassificationLevel(
+        Math.max(
+          this.getClassificationLevel(),
+          classification.getClassificationLevel()
+        )
+      );
 
       this.mNonIC.combine(classification.mNonIC);
 
@@ -156,7 +173,6 @@ export class Classification implements IClassification {
       this.addSource(...classification.getSources());
       this.addReason(...classification.getReasons());
     }
-
   }
 
   public clone(): Classification {
@@ -273,7 +289,7 @@ export class Classification implements IClassification {
     return this.mDissemination.isRelido();
   }
 
-  public setFouo(fouo: boolean): Classification  {
+  public setFouo(fouo: boolean): Classification {
     this.mDissemination.setFouo(fouo);
     return this;
   }
